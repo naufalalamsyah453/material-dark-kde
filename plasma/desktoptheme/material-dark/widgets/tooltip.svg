@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="140" height="176">
+<g id="topleft"><rect x="10" y="10" width="8" height="8" fill="#000" fill-opacity="0"/><path transform="translate(10,10)" d="M0,8 A8,8 0 0 1 8,0 L8,8 Z" fill="#36343B"/></g>
+<g id="topright"><rect x="10" y="22" width="8" height="8" fill="#000" fill-opacity="0"/><path transform="translate(10,22)" d="M0,0 A8,8 0 0 1 8,8 L0,8 Z" fill="#36343B"/></g>
+<g id="bottomleft"><rect x="10" y="34" width="8" height="8" fill="#000" fill-opacity="0"/><path transform="translate(10,34)" d="M0,0 A8,8 0 0 0 8,8 L8,0 Z" fill="#36343B"/></g>
+<g id="bottomright"><rect x="10" y="46" width="8" height="8" fill="#000" fill-opacity="0"/><path transform="translate(10,46)" d="M8,0 A8,8 0 0 1 0,8 L0,0 Z" fill="#36343B"/></g>
+<g id="top"><rect x="10" y="58" width="8" height="8" fill="#000" fill-opacity="0"/><rect x="10" y="58" width="8" height="8" fill="#36343B"/></g>
+<g id="bottom"><rect x="10" y="70" width="8" height="8" fill="#000" fill-opacity="0"/><rect x="10" y="70" width="8" height="8" fill="#36343B"/></g>
+<g id="left"><rect x="10" y="82" width="8" height="8" fill="#000" fill-opacity="0"/><rect x="10" y="82" width="8" height="8" fill="#36343B"/></g>
+<g id="right"><rect x="10" y="94" width="8" height="8" fill="#000" fill-opacity="0"/><rect x="10" y="94" width="8" height="8" fill="#36343B"/></g>
+<g id="center"><rect x="10" y="106" width="8" height="8" fill="#000" fill-opacity="0"/><rect x="10" y="106" width="8" height="8" fill="#36343B"/></g>
+<g id="hint-left-margin"><rect x="10" y="118" width="12" height="8" fill="#000" fill-opacity="0"/></g>
+<g id="hint-right-margin"><rect x="10" y="130" width="12" height="8" fill="#000" fill-opacity="0"/></g>
+<g id="hint-top-margin"><rect x="10" y="142" width="8" height="10" fill="#000" fill-opacity="0"/></g>
+<g id="hint-bottom-margin"><rect x="10" y="156" width="8" height="10" fill="#000" fill-opacity="0"/></g>
+</svg>

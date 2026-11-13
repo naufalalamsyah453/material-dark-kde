@@ -1,0 +1,14 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Material Dark"
+            }
+        ],
+        "Description": "Material Design 3 dark: tonal surfaces, rounded shapes",
+        "Id": "material-dark",
+        "License": "MIT",
+        "Name": "Material Dark",
+        "Version": "1.1"
+    }
+}

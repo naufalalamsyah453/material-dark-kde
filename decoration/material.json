@@ -1,0 +1,14 @@
+{
+    "KPlugin": {
+        "Description": "Material Design 3 window decoration: tonal titlebar, round buttons, soft elevation",
+        "EnabledByDefault": true,
+        "Name": "Material Dark"
+    },
+    "org.kde.kdecoration3": {
+        "blur": false,
+        "recommendedBorderSize": "Normal",
+        "styles": [
+            "titled"
+        ]
+    }
+}

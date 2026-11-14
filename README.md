@@ -133,6 +133,9 @@ Pindahkan dulu ke Breeze di System Settings, lalu `./uninstall.sh`.
   `org.kde.desktop`); perlu logout/login.
 - Panah combobox/spinbox: segitiga tetap 8x4px, tidak lagi membesar di spinbox.
 - Tool button berteks berbentuk pil seperti tombol biasa.
+- Warna disatukan antara app style (C++/QML) dan tema Plasma (SVG): field = Colors:View (#100E11), hover/fokus field
+  = Base + 6% teks, section/menu/group box = #211C1F (sama dengan dialog Plasma), track slider/switch = #3A3538,
+  panel Plasma = warna Window, state tombol tertekan/fokus Plasma = lapisan teks netral 10% (bukan pink).
 
 **1.2.2**
 - App menu, popup applet taskbar, serta OSD volume dan brightness kini punya border tipis

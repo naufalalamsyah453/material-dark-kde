@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="90" height="320">
-<g id="inactive-left" transform="translate(10,10)"><path d="M11,0 A11,11 0 0 0 11,22 L11,0 Z" fill="#3A3034"/></g>
-<g id="inactive-center" transform="translate(21,10)"><rect x="0" y="0" width="22" height="22" fill="#3A3034"/></g>
-<g id="inactive-right" transform="translate(43,10)"><path d="M0,0 A11,11 0 0 1 0,22 L0,0 Z" fill="#3A3034"/></g>
+<g id="inactive-left" transform="translate(10,10)"><path d="M11,0 A11,11 0 0 0 11,22 L11,0 Z" fill="#3A3538"/></g>
+<g id="inactive-center" transform="translate(21,10)"><rect x="0" y="0" width="22" height="22" fill="#3A3538"/></g>
+<g id="inactive-right" transform="translate(43,10)"><path d="M0,0 A11,11 0 0 1 0,22 L0,0 Z" fill="#3A3538"/></g>
 <g id="active-left" transform="translate(10,42)"><path d="M11,0 A11,11 0 0 0 11,22 L11,0 Z" fill="#F2B8C6"/></g>
 <g id="active-center" transform="translate(21,42)"><rect x="0" y="0" width="22" height="22" fill="#F2B8C6"/></g>
 <g id="active-right" transform="translate(43,42)"><path d="M0,0 A11,11 0 0 1 0,22 L0,0 Z" fill="#F2B8C6"/></g>

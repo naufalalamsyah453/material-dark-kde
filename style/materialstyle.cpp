@@ -68,16 +68,22 @@ QColor outlineVariant(const QPalette &pal)
     return mix(pal.color(QPalette::WindowText), pal.color(QPalette::Window), 0.8);
 }
 
-// permukaan section (toolbar, panel tab, status bar): window + 4% warna teks, sedikit lebih terang dari window
+// permukaan "container": window + 3% warna teks (= #211C1F, sama dengan BackgroundAlternate dan dialog Plasma).
+// Dipakai toolbar, panel tab, status bar, group box, dan menu supaya satu tingkat terang di seluruh desktop.
 QColor sectionTone(const QPalette &pal)
 {
-    return mix(pal.color(QPalette::Window), pal.color(QPalette::WindowText), 0.04);
+    return mix(pal.color(QPalette::Window), pal.color(QPalette::WindowText), 0.03);
 }
 
-// permukaan menu: window + 6% warna teks (surface container)
 QColor menuSurface(const QPalette &pal)
 {
-    return mix(pal.color(QPalette::Window), pal.color(QPalette::WindowText), 0.06);
+    return sectionTone(pal);
+}
+
+// track slider/switch kosong: window + 15% warna teks (= #3A3538, sama dengan switch/slider Plasma dan QML)
+QColor trackTone(const QPalette &pal)
+{
+    return mix(pal.color(QPalette::Window), pal.color(QPalette::WindowText), 0.15);
 }
 
 // menu yang latarnya tembus (sudut bulat); combobox popup dan lainnya tetap persegi
@@ -312,7 +318,7 @@ void MaterialStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
         // kartu tonal tanpa garis: pembeda section cukup dari warna permukaan
         p->save();
         p->setRenderHint(QPainter::Antialiasing);
-        const QColor tone = mix(opt->palette.color(QPalette::Window), opt->palette.color(QPalette::WindowText), 0.04);
+        const QColor tone = sectionTone(opt->palette);
         fillRound(p, QRectF(opt->rect), tone, R_CARD);
         p->restore();
         return;
@@ -903,7 +909,7 @@ void MaterialStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComp
         if (sl->subControls & SC_SliderGroove) {
             const QRect gr = subControlRect(CC_Slider, sl, SC_SliderGroove, w);
             const QRectF g = horiz ? QRectF(gr.left(), gr.center().y() - 4, gr.width(), 8) : QRectF(gr.center().x() - 4, gr.top(), 8, gr.height());
-            fillRound(p, g, mix(sl->palette.color(QPalette::Window), text, 0.18), 4);
+            fillRound(p, g, trackTone(sl->palette), 4);
             const QRect hr = subControlRect(CC_Slider, sl, SC_SliderHandle, w);
             QRectF gi = g;
             if (horiz) {

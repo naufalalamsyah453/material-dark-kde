@@ -116,7 +116,7 @@ QColor Decoration::outlineColor() const
     const QPalette pal = window()->palette();
     const QColor text = pal.color(QPalette::WindowText);
     const QColor bg = pal.color(QPalette::Window);
-    const qreal t = window()->isActive() ? 0.78 : 0.88;
+    const qreal t = window()->isActive() ? 0.80 : 0.88;
     return QColor::fromRgbF(text.redF() * (1 - t) + bg.redF() * t, text.greenF() * (1 - t) + bg.greenF() * t, text.blueF() * (1 - t) + bg.blueF() * t);
 }
 

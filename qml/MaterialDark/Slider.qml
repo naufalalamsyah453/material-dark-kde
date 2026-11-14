@@ -9,7 +9,7 @@ T.Slider {
 
     readonly property color primary: palette.highlight
     readonly property color onPrimary: palette.highlightedText
-    readonly property color trackColor: Qt.tint(palette.window, Qt.alpha(palette.windowText, 0.18))
+    readonly property color trackColor: Qt.tint(palette.window, Qt.alpha(palette.windowText, 0.15))
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset, implicitHandleWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset, implicitHandleHeight + topPadding + bottomPadding)

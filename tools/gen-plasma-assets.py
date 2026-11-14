@@ -35,25 +35,33 @@ def rect(x, y, w, h, color, opacity=None):
 
 def rr_parts(prefix, x, y, w, h, r, color):
     """9-slice pieces of a filled rounded rectangle."""
+    p = (prefix + "-") if prefix else ""
     return [
-        f'<g id="{prefix}-topleft" transform="translate({x},{y})"><path d="M0,{r} A{r},{r} 0 0 1 {r},0 L{r},{r} Z" fill="{color}"/></g>',
-        f'<g id="{prefix}-topright" transform="translate({x + w - r},{y})"><path d="M0,0 A{r},{r} 0 0 1 {r},{r} L0,{r} Z" fill="{color}"/></g>',
-        f'<g id="{prefix}-bottomleft" transform="translate({x},{y + h - r})"><path d="M0,0 A{r},{r} 0 0 0 {r},{r} L{r},0 Z" fill="{color}"/></g>',
-        f'<g id="{prefix}-bottomright" transform="translate({x + w - r},{y + h - r})"><path d="M{r},0 A{r},{r} 0 0 1 0,{r} L0,0 Z" fill="{color}"/></g>',
-        f'<g id="{prefix}-top" transform="translate({x + r},{y})">' + rect(0, 0, w - 2 * r, r, color) + "</g>",
-        f'<g id="{prefix}-bottom" transform="translate({x + r},{y + h - r})">' + rect(0, 0, w - 2 * r, r, color) + "</g>",
-        f'<g id="{prefix}-left" transform="translate({x},{y + r})">' + rect(0, 0, r, h - 2 * r, color) + "</g>",
-        f'<g id="{prefix}-right" transform="translate({x + w - r},{y + r})">' + rect(0, 0, r, h - 2 * r, color) + "</g>",
-        f'<g id="{prefix}-center" transform="translate({x + r},{y + r})">' + rect(0, 0, w - 2 * r, h - 2 * r, color) + "</g>",
+        f'<g id="{p}topleft" transform="translate({x},{y})"><path d="M0,{r} A{r},{r} 0 0 1 {r},0 L{r},{r} Z" fill="{color}"/></g>',
+        f'<g id="{p}topright" transform="translate({x + w - r},{y})"><path d="M0,0 A{r},{r} 0 0 1 {r},{r} L0,{r} Z" fill="{color}"/></g>',
+        f'<g id="{p}bottomleft" transform="translate({x},{y + h - r})"><path d="M0,0 A{r},{r} 0 0 0 {r},{r} L{r},0 Z" fill="{color}"/></g>',
+        f'<g id="{p}bottomright" transform="translate({x + w - r},{y + h - r})"><path d="M{r},0 A{r},{r} 0 0 1 0,{r} L0,0 Z" fill="{color}"/></g>',
+        f'<g id="{p}top" transform="translate({x + r},{y})">' + rect(0, 0, w - 2 * r, r, color) + "</g>",
+        f'<g id="{p}bottom" transform="translate({x + r},{y + h - r})">' + rect(0, 0, w - 2 * r, r, color) + "</g>",
+        f'<g id="{p}left" transform="translate({x},{y + r})">' + rect(0, 0, r, h - 2 * r, color) + "</g>",
+        f'<g id="{p}right" transform="translate({x + w - r},{y + r})">' + rect(0, 0, r, h - 2 * r, color) + "</g>",
+        f'<g id="{p}center" transform="translate({x + r},{y + r})">' + rect(0, 0, w - 2 * r, h - 2 * r, color) + "</g>",
     ]
 
 
-def frame(prefix, x, y, w, h, r, fill, border=None, bw=2):
+def frame(prefix, x, y, w, h, r, fill, border=None, bw=2, pad=0):
     """9-slice rounded rectangle, optionally with a real border ring.
 
     Every piece contains both the border and the fill: an overlay frame with
     different element names would be ignored by KSvg.
+
+    ``pad`` pushes the painted art ``pad`` pixels inwards while keeping the
+    slice geometry larger. TextField overlays are anchored with negative
+    margins, so a padded overlay ring can land exactly on the base frame edge
+    instead of drawing a second ring outside it.
     """
+    p = (prefix + "-") if prefix else ""
+
     if not border:
         return rr_parts(prefix, x, y, w, h, r, fill)
 
@@ -69,52 +77,104 @@ def frame(prefix, x, y, w, h, r, fill, border=None, bw=2):
     br_outer = f"M{r},0 A{r},{r} 0 0 1 0,{r} L0,0 Z"
     br_inner = f"M{r - bw},0 A{ir},{ir} 0 0 1 0,{r - bw} L0,0 Z"
 
-    def corner(name, px, py, outer, inner):
+    def wrap(name, gx, gy, bw_box, bh_box, art, ax, ay):
+        """Place art in a slice box, optionally inset by ``pad`` + spacer."""
+        if not pad:
+            return f'<g id="{name}" transform="translate({gx},{gy})">{art}</g>'
         return (
-            f'<g id="{name}" transform="translate({px},{py})">'
-            f'<path d="{outer}" fill="{border}"/>'
-            f'<path d="{inner}" fill="{fill}"/>'
-            "</g>"
+            f'<g id="{name}" transform="translate({gx},{gy})">'
+            + rect(0, 0, bw_box, bh_box, "#000", "0")
+            + f'<g transform="translate({ax},{ay})">{art}</g>'
+            + "</g>"
         )
 
+    def corner(name, px, py, outer, inner, right=False, bottom=False):
+        art = f'<path d="{outer}" fill="{border}"/><path d="{inner}" fill="{fill}"/>'
+        if not pad:
+            return f'<g id="{name}" transform="translate({px},{py})">{art}</g>'
+        ox = -pad
+        oy = -pad
+        art_off = (pad, pad)
+        if right:
+            ox = 0
+        if bottom:
+            oy = 0
+        if right and bottom:
+            art_off = (0, 0)
+        elif right:
+            art_off = (0, pad)
+        elif bottom:
+            art_off = (pad, 0)
+        else:
+            ox, oy, art_off = -pad, -pad, (pad, pad)
+        return (
+            f'<g id="{name}" transform="translate({px + ox},{py + oy})">'
+            + rect(0, 0, r + pad, r + pad, "#000", "0")
+            + f'<g transform="translate({art_off[0]},{art_off[1]})">{art}</g>'
+            + "</g>"
+        )
+
+    top_box = (w - 2 * r, r + pad) if pad else (w - 2 * r, r)
+    left_box = (r + pad, h - 2 * r) if pad else (r, h - 2 * r)
+
     return [
-        corner(prefix + "-topleft", x, y, tl_outer, tl_inner),
-        corner(prefix + "-topright", x + w - r, y, tr_outer, tr_inner),
-        corner(prefix + "-bottomleft", x, y + h - r, bl_outer, bl_inner),
-        corner(prefix + "-bottomright", x + w - r, y + h - r, br_outer, br_inner),
-        f'<g id="{prefix}-top" transform="translate({x + r},{y})">'
-        + rect(0, 0, w - 2 * r, bw, border)
-        + rect(0, bw, w - 2 * r, r - bw, fill)
-        + "</g>",
-        f'<g id="{prefix}-bottom" transform="translate({x + r},{y + h - r})">'
-        + rect(0, 0, w - 2 * r, r - bw, fill)
-        + rect(0, r - bw, w - 2 * r, bw, border)
-        + "</g>",
-        f'<g id="{prefix}-left" transform="translate({x},{y + r})">'
-        + rect(0, 0, bw, h - 2 * r, border)
-        + rect(bw, 0, r - bw, h - 2 * r, fill)
-        + "</g>",
-        f'<g id="{prefix}-right" transform="translate({x + w - r},{y + r})">'
-        + rect(0, 0, r - bw, h - 2 * r, fill)
-        + rect(r - bw, 0, bw, h - 2 * r, border)
-        + "</g>",
-        f'<g id="{prefix}-center" transform="translate({x + r},{y + r})">' + rect(0, 0, w - 2 * r, h - 2 * r, fill) + "</g>",
+        corner(p + "topleft", x, y, tl_outer, tl_inner),
+        corner(p + "topright", x + w - r, y, tr_outer, tr_inner, right=True),
+        corner(p + "bottomleft", x, y + h - r, bl_outer, bl_inner, bottom=True),
+        corner(p + "bottomright", x + w - r, y + h - r, br_outer, br_inner, right=True, bottom=True),
+        wrap(
+            p + "top",
+            x + r,
+            y - pad,
+            top_box[0],
+            top_box[1],
+            rect(0, 0, w - 2 * r, bw, border) + rect(0, bw, w - 2 * r, r - bw, fill),
+            0,
+            pad,
+        ),
+        wrap(
+            p + "bottom",
+            x + r,
+            y + h - r,
+            top_box[0],
+            top_box[1],
+            rect(0, 0, w - 2 * r, r - bw, fill) + rect(0, r - bw, w - 2 * r, bw, border),
+            0,
+            0,
+        ),
+        wrap(
+            p + "left",
+            x - pad,
+            y + r,
+            left_box[0],
+            left_box[1],
+            rect(0, 0, bw, h - 2 * r, border) + rect(bw, 0, r - bw, h - 2 * r, fill),
+            pad,
+            0,
+        ),
+        wrap(
+            p + "right",
+            x + w - r,
+            y + r,
+            left_box[0],
+            left_box[1],
+            rect(0, 0, r - bw, h - 2 * r, fill) + rect(r - bw, 0, bw, h - 2 * r, border),
+            0,
+            0,
+        ),
+        f'<g id="{p}center" transform="translate({x + r},{y + r})">' + rect(0, 0, w - 2 * r, h - 2 * r, fill) + "</g>",
     ]
 
 
-def hint_margins(prefix, x, y, dx, dy, extra=None):
-    pts = [
-        (prefix + "-hint-left-margin", x, y, dx, dy),
-        (prefix + "-hint-right-margin", x + 40, y, dx, dy),
-        (prefix + "-hint-top-margin", x, y + 20, dx, dy),
-        (prefix + "-hint-bottom-margin", x, y + 40, dx, dy),
+def frame_hints(prefix, radius, x, y, natural):
+    """Transparent elements whose *size* becomes the frame content margin."""
+    base = (prefix + "-") if prefix else ""
+    return [
+        f'<g id="{base}hint-left-margin">' + rect(x, y + 20, radius, 4, "#000", "0") + "</g>",
+        f'<g id="{base}hint-right-margin">' + rect(x + natural - radius, y + 20, radius, 4, "#000", "0") + "</g>",
+        f'<g id="{base}hint-top-margin">' + rect(x + 20, y, 4, radius, "#000", "0") + "</g>",
+        f'<g id="{base}hint-bottom-margin">' + rect(x + 20, y + natural - radius, 4, radius, "#000", "0") + "</g>",
     ]
-    out = []
-    for name, px, py, pw, ph in pts:
-        out.append(f'<g id="{name}">' + rect(px, py, pw, ph, "#000", "0") + "</g>")
-    if extra:
-        out += extra
-    return out
 
 
 def write_svg(path, width, height, body):
@@ -127,21 +187,25 @@ def write_svg(path, width, height, body):
     print("wrote", path.relative_to(ROOT))
 
 
-def simple_frame(path, radius, fill, natural=64, margins=12, prefix="normal"):
-    # No hint margins: the corner radius itself is the content padding, which
-    # keeps the 9-slice drawing aligned. A hint larger than the corner size
-    # leaves visible notches between the corner and the stretched edges.
-    body = frame(prefix, 10, 10, natural, natural, radius, fill)
+def simple_frame(path, radius, fill, natural=64):
+    # Plasma 6.8 looks up dialog/popup frames with an empty prefix, while a few
+    # components still request "normal". Emit both sets so the surface is never
+    # silently dropped (that made app-menu popups fully transparent).
+    natural = max(natural, 2 * radius + 8)
+    body = []
+    for prefix in ("", "normal"):
+        body += frame(prefix, 10, 10, natural, natural, radius, fill)
+        body += frame_hints(prefix, radius, 10, 10, natural)
     write_svg(path, natural + 30, natural + 30, body)
 
 
 def gen_backgrounds():
-    # Applet / popup surface (raised container)
-    simple_frame(WIDGETS / "background.svg", 12, SURFACE_CONTAINER)
-    # Dialog surface: slightly darker, corners a bit larger
-    simple_frame(DIALOGS / "background.svg", 16, SURFACE_CONTAINER)
-    # Tooltip: dark elevated surface, small radius
-    simple_frame(WIDGETS / "tooltip.svg", 8, TOOLTIP)
+    # Applet / popup surface (raised container), 16px content padding.
+    simple_frame(WIDGETS / "background.svg", 16, SURFACE_CONTAINER)
+    # Dialog surface (app menu): roomier padding so the header is not flush.
+    simple_frame(DIALOGS / "background.svg", 20, SURFACE_CONTAINER)
+    # Tooltip: dark elevated surface, compact padding.
+    simple_frame(WIDGETS / "tooltip.svg", 10, TOOLTIP)
 
 
 def gen_viewitem():
@@ -239,16 +303,30 @@ def gen_switch():
 
 
 def gen_lineedit():
-    w, h, r, bw = 64, 36, 10, 2
+    w, h, r, bw = 64, 36, 8, 2
+    # Material filled text field: no outline at rest, a subtle hover surface and
+    # a pink focus ring. The overlays are padded by the corner radius: the QML
+    # TextField anchors them with -margins, so the padded ring lands exactly on
+    # the base edge instead of drawing a second, larger ring around it.
     rows = [
-        ("base", 10, FIELD, OUTLINE),
-        ("hover", 70, FIELD, PRIMARY_CONTAINER),
-        ("focus", 130, FIELD, PRIMARY),
-        ("focusframe", 190, FIELD, PRIMARY),
+        ("base", 10, FIELD, None),
+        ("hover", 70, SURFACE_HIGH, OUTLINE_VARIANT),
+        ("focus", 130, SURFACE_HIGH, PRIMARY),
+        ("focusframe", 190, SURFACE_HIGH, PRIMARY),
     ]
     body = []
-    for name, y, fill, border in rows:
-        body += frame(name, 10, y, w, h, r, fill, border, bw)
+    # Draw the focus overlay above the base (PlasmaComponents TextField checks
+    # this id and otherwise puts the focus layer behind the background).
+    body.append('<g id="hint-focus-over-base">' + rect(10, 10, 4, 4, "#000", "0") + "</g>")
+    body += frame("base", 10, 10, w, h, r, FIELD)
+    for name, y, fill, border in rows[1:]:
+        body += frame(name, 10, y, w, h, r, fill, border, bw, pad=r)
+        body += [
+            f'<g id="{name}-hint-left-margin">' + rect(10, y + 20, r, 4, "#000", "0") + "</g>",
+            f'<g id="{name}-hint-right-margin">' + rect(10 + w - r, y + 20, r, 4, "#000", "0") + "</g>",
+            f'<g id="{name}-hint-top-margin">' + rect(10 + 20, y, 4, r, "#000", "0") + "</g>",
+            f'<g id="{name}-hint-bottom-margin">' + rect(10 + 20, y + h - r, 4, r, "#000", "0") + "</g>",
+        ]
     write_svg(WIDGETS / "lineedit.svg", 100, 250, body)
 
 

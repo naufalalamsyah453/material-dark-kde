@@ -125,6 +125,19 @@ Pindahkan dulu ke Breeze di System Settings, lalu `./uninstall.sh`.
 
 ## Riwayat Perubahan
 
+**1.2.1**
+- App menu / popup Plasma kembali punya permukaan solid: `widgets/background.svg` dan
+  `dialogs/background.svg` kini menyediakan elemen tanpa prefix yang dicari Plasma 6.8
+  (sebelumnya menu tampil transparan). Sudut dialog 20px, popup 16px.
+- Padding popup diperbesar (dialog 20px, popup 16px) supaya baris header app menu tidak lagi
+  menempel ke border.
+- Field/search Plasma: outline abu-abu saat idle dihapus. Fokus kini satu cincin pink 2px
+  yang presisi di tepi field, tanpa cincin dalam atau halo; hover memakai permukaan tonal.
+  Radius field Plasma 8px (Qt 10px), lapisan fokus digambar di atas base lewat
+  `hint-focus-over-base`.
+- Context menu Qt lebih ringkas: tinggi item 32→28px, padding horizontal 12→10px, margin
+  menu 4/6→3/4px, kolom centang 24→20px, jarak ikon 8→6px, pemisah 9→7px.
+
 **1.2.0**
 - Palet baru: seluruh aksen ungu M3 (`#D0BCFF`) diganti pink pastel `#F2B8C6` dengan permukaan
   warm charcoal. Color scheme, Konsole, dan fallback di style/dekorasi ikut diselaraskan.

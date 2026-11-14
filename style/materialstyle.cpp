@@ -30,13 +30,13 @@ constexpr int BTN_H = 36;    // tinggi minimum tombol
 
 // Menu (M3 menu: container tonal, item dengan state layer, tanpa isi primary penuh)
 constexpr int R_MENU = 12;         // radius container menu
-constexpr int MENU_PAD_X = 12;     // padding kiri / kanan di dalam item
-constexpr int MENU_ITEM_H = 32;    // tinggi minimum item
-constexpr int MENU_CHECK_W = 24;   // kolom tanda centang
-constexpr int MENU_ICON_GAP = 8;   // jarak ikon ke teks
-constexpr int MENU_TAB_GAP = 24;   // jarak teks ke pintasan keyboard
-constexpr int MENU_ARROW_W = 20;   // area panah submenu
-constexpr int MENU_SEP_H = 9;      // tinggi pemisah (1px garis + 4px di atas dan bawah)
+constexpr int MENU_PAD_X = 10;     // padding kiri / kanan di dalam item
+constexpr int MENU_ITEM_H = 28;    // tinggi minimum item
+constexpr int MENU_CHECK_W = 20;   // kolom tanda centang
+constexpr int MENU_ICON_GAP = 6;   // jarak ikon ke teks
+constexpr int MENU_TAB_GAP = 18;   // jarak teks ke pintasan keyboard
+constexpr int MENU_ARROW_W = 16;   // area panah submenu
+constexpr int MENU_SEP_H = 7;      // tinggi pemisah (1px garis + 3px di atas dan bawah)
 
 QColor mix(const QColor &a, const QColor &b, qreal t)
 {
@@ -959,9 +959,9 @@ int MaterialStyle::pixelMetric(PixelMetric m, const QStyleOption *opt, const QWi
     case PM_MenuPanelWidth:
         return 1;
     case PM_MenuHMargin:
-        return 4;
+        return 3;
     case PM_MenuVMargin:
-        return 6;
+        return 4;
     case PM_ToolTipLabelFrameWidth:
         return 6;
     case PM_ScrollBarExtent:
@@ -1027,7 +1027,7 @@ QSize MaterialStyle::sizeFromContents(ContentsType t, const QStyleOption *opt, c
         }
         if (mi->menuItemType == QStyleOptionMenuItem::Separator) {
             const int sepW = mi->fontMetrics.horizontalAdvance(mi->text) + 2 * MENU_PAD_X;
-            return QSize(sepW, mi->text.isEmpty() ? MENU_SEP_H : mi->fontMetrics.height() + 14);
+            return QSize(sepW, mi->text.isEmpty() ? MENU_SEP_H : mi->fontMetrics.height() + 10);
         }
         QString label = mi->text;
         const int tab = label.indexOf(QLatin1Char('\t'));
@@ -1057,7 +1057,7 @@ QSize MaterialStyle::sizeFromContents(ContentsType t, const QStyleOption *opt, c
         if (mi->menuItemType == QStyleOptionMenuItem::SubMenu) {
             width += MENU_ARROW_W;
         }
-        return QSize(qMax(width, 140), qMax(height + 14, MENU_ITEM_H));
+        return QSize(qMax(width, 120), qMax(height + 8, MENU_ITEM_H));
     }
     default:
         break;

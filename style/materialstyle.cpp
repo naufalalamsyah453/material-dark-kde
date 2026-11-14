@@ -68,11 +68,11 @@ QColor outlineVariant(const QPalette &pal)
     return mix(pal.color(QPalette::WindowText), pal.color(QPalette::Window), 0.8);
 }
 
-// permukaan "container": window + 3% warna teks (= #211C1F, sama dengan BackgroundAlternate dan dialog Plasma).
+// permukaan "container": window + 6% warna teks (= #272225, sama dengan BackgroundAlternate dan dialog Plasma).
 // Dipakai toolbar, panel tab, status bar, group box, dan menu supaya satu tingkat terang di seluruh desktop.
 QColor sectionTone(const QPalette &pal)
 {
-    return mix(pal.color(QPalette::Window), pal.color(QPalette::WindowText), 0.03);
+    return mix(pal.color(QPalette::Window), pal.color(QPalette::WindowText), 0.06);
 }
 
 QColor menuSurface(const QPalette &pal)
@@ -423,7 +423,11 @@ void MaterialStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
     case PE_IndicatorSpinDown: {
         // segitiga kecil tetap (8x4px), tidak ikut membesar mengikuti area tombol seperti Fusion
         const bool up = element == PE_IndicatorArrowUp || element == PE_IndicatorSpinUp;
-        const QPointF c = QRectF(opt->rect).center();
+        QPointF c = QRectF(opt->rect).center();
+        // panah menu tool button (Konsole: New Tab / Split View) diberi Qt di pojok kanan-bawah: pusatkan vertikal
+        if (w && qobject_cast<const QToolButton *>(w) && opt->rect.height() <= 16) {
+            c.setY(QRectF(w->rect()).center().y());
+        }
         const qreal hw = 4.0;
         const qreal hh = 2.0;
         QPolygonF tri;
@@ -439,6 +443,28 @@ void MaterialStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
         p->setPen(Qt::NoPen);
         p->setBrush(col);
         p->drawPolygon(tri);
+        p->restore();
+        return;
+    }
+    case PE_IndicatorTabClose: {
+        // tombol tutup tab: "x" tipis, lingkaran tonal saat hover/tekan; bukan kotak abu/oranye bawaan Fusion
+        const bool en = isEnabled(opt);
+        const bool hov = en && (opt->state & (State_MouseOver | State_Raised));
+        const bool down = en && (opt->state & State_Sunken);
+        const QColor col = opt->palette.color(QPalette::WindowText);
+        const QPointF c = QRectF(opt->rect).center();
+        const qreal d = qMin(qMin<qreal>(opt->rect.width(), opt->rect.height()), 18.0);
+        constexpr qreal A = 3.5;
+        p->save();
+        p->setRenderHint(QPainter::Antialiasing);
+        if (hov || down) {
+            fillRound(p, QRectF(c.x() - d / 2, c.y() - d / 2, d, d), withAlpha(col, down ? 0.12 : 0.08), d / 2);
+        }
+        QPen pen(withAlpha(col, !en ? 0.38 : (hov || down) ? 1.0 : 0.7), 1.6);
+        pen.setCapStyle(Qt::RoundCap);
+        p->setPen(pen);
+        p->drawLine(QPointF(c.x() - A, c.y() - A), QPointF(c.x() + A, c.y() + A));
+        p->drawLine(QPointF(c.x() - A, c.y() + A), QPointF(c.x() + A, c.y() - A));
         p->restore();
         return;
     }

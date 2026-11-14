@@ -14,7 +14,7 @@ T.ComboBox {
     // "outline" M3: 60% window + 40% teks; "outline variant": 80% window + 20% teks
     readonly property color outline: Qt.tint(palette.window, Qt.alpha(palette.windowText, 0.4))
     readonly property color outlineVariant: Qt.tint(palette.window, Qt.alpha(palette.windowText, 0.2))
-    readonly property color menuSurface: Qt.tint(palette.window, Qt.alpha(palette.windowText, 0.03))
+    readonly property color menuSurface: Qt.tint(palette.window, Qt.alpha(palette.windowText, 0.06))
     readonly property int arrowWidth: 28
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,

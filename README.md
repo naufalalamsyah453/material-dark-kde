@@ -91,6 +91,7 @@ style Qt, QML, dekorasi jendela, serta Plasma Style.
 | Context menu | Permukaan tonal, sudut 12px, item hover = *state layer* |
 | Titlebar | Surface tonal, sudut jendela 6px, tombol bulat, close = error |
 | Tooltip | Surface `#322A2E`, sudut 5px (Plasma) |
+| Bayangan | Shell (menu, OSD, tooltip, panel mengambang) memakai shadow lembut; kontrol dalam window tidak |
 
 ## Isi Repo
 
@@ -160,6 +161,13 @@ Pindahkan dulu ke Breeze di System Settings, lalu `./uninstall.sh`.
   kontrol QtWidgets dan komponen Plasma.
 
 ## Riwayat Perubahan
+
+**1.3.1**
+- **Bayangan pada permukaan shell**: app menu / popup Plasma, OSD, tooltip, dan panel mengambang
+  kini punya *drop shadow* lembut 8–10px yang mengikuti sudut membulat. Bayangan ditanam di
+  padding frame 9-slice, jadi ukuran dan tata letak isi popup tidak berubah. Jendela tetap
+  memakai shadow dekorasi KWin (24px). Kontrol **di dalam window** (tombol, input, kartu, menu
+  konteks) tidak diberi shadow.
 
 **1.3.0**
 - **Varian biru**: color scheme `MaterialDarkBlue`, Konsole `MaterialDarkBlue`, dan Plasma Style

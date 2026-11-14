@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-VERSION = "1.3.0"
+VERSION = "1.3.1"
 
 # ---------------------------------------------------------------------------
 # Palettes: pink (default) and blue. Satu sumber untuk Plasma SVG, color
@@ -255,6 +255,136 @@ def frame_hints(prefix, radius, x, y, natural):
     ]
 
 
+def shadow_defs(pad, r):
+    """Gradien bayangan lembut untuk frame shell (Material elevation)."""
+    R = r + pad
+    return (
+        "<defs>\n"
+        f'<linearGradient id="md-sh-top" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="{pad}">'
+        '<stop offset="0" stop-color="#000" stop-opacity="0.02"/>'
+        '<stop offset="0.6" stop-color="#000" stop-opacity="0.16"/>'
+        '<stop offset="1" stop-color="#000" stop-opacity="0.34"/>'
+        "</linearGradient>\n"
+        f'<linearGradient id="md-sh-bottom" gradientUnits="userSpaceOnUse" x1="0" y1="{r}" x2="0" y2="{r + pad}">'
+        '<stop offset="0" stop-color="#000" stop-opacity="0.34"/>'
+        '<stop offset="0.4" stop-color="#000" stop-opacity="0.16"/>'
+        '<stop offset="1" stop-color="#000" stop-opacity="0.02"/>'
+        "</linearGradient>\n"
+        f'<linearGradient id="md-sh-left" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="{pad}" y2="0">'
+        '<stop offset="0" stop-color="#000" stop-opacity="0.02"/>'
+        '<stop offset="0.6" stop-color="#000" stop-opacity="0.16"/>'
+        '<stop offset="1" stop-color="#000" stop-opacity="0.34"/>'
+        "</linearGradient>\n"
+        f'<linearGradient id="md-sh-right" gradientUnits="userSpaceOnUse" x1="{r}" y1="0" x2="{r + pad}" y2="0">'
+        '<stop offset="0" stop-color="#000" stop-opacity="0.34"/>'
+        '<stop offset="0.4" stop-color="#000" stop-opacity="0.16"/>'
+        '<stop offset="1" stop-color="#000" stop-opacity="0.02"/>'
+        "</linearGradient>\n"
+        + "".join(
+            f'<radialGradient id="md-sh-{name}" gradientUnits="userSpaceOnUse" cx="{cx}" cy="{cy}" r="{R}">'
+            '<stop offset="0" stop-color="#000" stop-opacity="0.34"/>'
+            '<stop offset="0.55" stop-color="#000" stop-opacity="0.14"/>'
+            '<stop offset="1" stop-color="#000" stop-opacity="0"/>'
+            "</radialGradient>\n"
+            for name, cx, cy in (
+                ("tl", pad, pad),
+                ("tr", r, pad),
+                ("bl", pad, r),
+                ("br", r, r),
+            )
+        )
+        + "</defs>"
+    )
+
+
+def frame_shadow(prefix, x, y, w, h, r, fill, border, bw, pad):
+    """9-slice rounded frame dengan bayangan di padding luar body.
+
+    Body tetap berukuran ``w x h``; padding ``pad`` ikut masuk ke dalam
+    potongan 9-slice sehingga Plasma menggambar bayangan di dalam window
+    (isi popup tidak bergeser karena hint margin ikut bertambah).
+    """
+    p = (prefix + "-") if prefix else ""
+    R = r + pad
+    ir = max(1, r - bw)
+
+    def body_corner(kind):
+        if kind == "tl":
+            outer = f"M0,{r} A{r},{r} 0 0 1 {r},0 L{r},{r} Z"
+            inner = f"M{bw},{r} A{ir},{ir} 0 0 1 {r},{bw} L{r},{r} Z"
+            offset = (pad, pad)
+        elif kind == "tr":
+            outer = f"M0,0 A{r},{r} 0 0 1 {r},{r} L0,{r} Z"
+            inner = f"M0,{bw} A{ir},{ir} 0 0 1 {r - bw},{r} L0,{r} Z"
+            offset = (0, pad)
+        elif kind == "bl":
+            outer = f"M0,0 A{r},{r} 0 0 0 {r},{r} L{r},0 Z"
+            inner = f"M{bw},0 A{ir},{ir} 0 0 0 {r},{r - bw} L{r},0 Z"
+            offset = (pad, 0)
+        else:
+            outer = f"M{r},0 A{r},{r} 0 0 1 0,{r} L0,0 Z"
+            inner = f"M{r - bw},0 A{ir},{ir} 0 0 1 0,{r - bw} L0,0 Z"
+            offset = (0, 0)
+        art = f'<path d="{outer}" fill="{border}"/><path d="{inner}" fill="{fill}"/>'
+        return offset, art
+
+    def corner(kind, gx, gy, shadow_path):
+        offset, art = body_corner(kind)
+        return (
+            f'<g id="{p}{kind}" transform="translate({gx},{gy})">'
+            f'<path d="{shadow_path}" fill="url(#md-sh-{kind})"/>'
+            f'<g transform="translate({offset[0]},{offset[1]})">{art}</g>'
+            "</g>"
+        )
+
+    # corner shadow paths memakai radius luar R
+    tl_path = f"M0,{R} A{R},{R} 0 0 1 {R},0 L{R},{R} Z"
+    tr_path = f"M0,0 A{R},{R} 0 0 1 {R},{R} L0,{R} Z"
+    bl_path = f"M0,0 A{R},{R} 0 0 0 {R},{R} L{R},0 Z"
+    br_path = f"M{R},0 A{R},{R} 0 0 1 0,{R} L0,0 Z"
+
+    return [
+        corner("tl", x - pad, y - pad, tl_path),
+        corner("tr", x + w - r, y - pad, tr_path),
+        corner("bl", x - pad, y + h - r, bl_path),
+        corner("br", x + w - r, y + h - r, br_path),
+        f'<g id="{p}top" transform="translate({x + r},{y - pad})">'
+        + rect(0, 0, w - 2 * r, pad, "url(#md-sh-top)")
+        + rect(0, pad, w - 2 * r, bw, border)
+        + rect(0, pad + bw, w - 2 * r, r - bw, fill)
+        + "</g>",
+        f'<g id="{p}bottom" transform="translate({x + r},{y + h - r})">'
+        + rect(0, 0, w - 2 * r, r - bw, fill)
+        + rect(0, r - bw, w - 2 * r, bw, border)
+        + rect(0, r, w - 2 * r, pad, "url(#md-sh-bottom)")
+        + "</g>",
+        f'<g id="{p}left" transform="translate({x - pad},{y + r})">'
+        + rect(0, 0, pad, h - 2 * r, "url(#md-sh-left)")
+        + rect(pad, 0, bw, h - 2 * r, border)
+        + rect(pad + bw, 0, r - bw, h - 2 * r, fill)
+        + "</g>",
+        f'<g id="{p}right" transform="translate({x + w - r},{y + r})">'
+        + rect(0, 0, r - bw, h - 2 * r, fill)
+        + rect(r - bw, 0, bw, h - 2 * r, border)
+        + rect(r, 0, pad, h - 2 * r, "url(#md-sh-right)")
+        + "</g>",
+        f'<g id="{p}center" transform="translate({x + r},{y + r})">'
+        + rect(0, 0, w - 2 * r, h - 2 * r, fill)
+        + "</g>",
+    ]
+
+
+def frame_shadow_hints(prefix, radius, x, y, natural):
+    """Hint margin = padding bayangan + radius supaya isi tetap di body."""
+    base = (prefix + "-") if prefix else ""
+    return [
+        f'<g id="{base}hint-left-margin">' + rect(x, y + 20, radius, 4, "#000", "0") + "</g>",
+        f'<g id="{base}hint-right-margin">' + rect(x + natural - radius, y + 20, radius, 4, "#000", "0") + "</g>",
+        f'<g id="{base}hint-top-margin">' + rect(x + 20, y, 4, radius, "#000", "0") + "</g>",
+        f'<g id="{base}hint-bottom-margin">' + rect(x + 20, y + natural - radius, 4, radius, "#000", "0") + "</g>",
+    ]
+
+
 def write_svg(path, width, height, body):
     path.parent.mkdir(parents=True, exist_ok=True)
     text = '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -265,23 +395,23 @@ def write_svg(path, width, height, body):
     print("wrote", path.relative_to(ROOT))
 
 
-def simple_frame(path, radius, fill, hairline, natural=64):
+def simple_frame(path, radius, fill, hairline, natural=64, pad=10):
     # Plasma 6.8 looks up dialog/popup frames with an empty prefix, while a few
     # components still request "normal". Emit both sets so the surface is never
     # silently dropped (that made app-menu popups fully transparent).
     natural = max(natural, 2 * radius + 8)
-    body = []
+    body = [shadow_defs(pad, radius)]
     for prefix in ("", "normal"):
-        body += frame(prefix, 10, 10, natural, natural, radius, fill, hairline, 1)
-        body += frame_hints(prefix, radius, 10, 10, natural)
-    write_svg(path, natural + 30, natural + 30, body)
+        body += frame_shadow(prefix, pad, pad, natural, natural, radius, fill, hairline, 1, pad)
+        body += frame_shadow_hints(prefix, radius + pad, pad, pad, natural)
+    write_svg(path, natural + 2 * pad, natural + 2 * pad, body)
 
 
 def gen_backgrounds(p, widgets, dialogs):
     # Setengah dari radius sebelumnya: 16 -> 8, 20 -> 10, 10 -> 5.
-    simple_frame(widgets / "background.svg", 8, p["section"], p["hairline"])
-    simple_frame(dialogs / "background.svg", 10, p["section"], p["hairline"])
-    simple_frame(widgets / "tooltip.svg", 5, p["tooltip"], p["hairline"])
+    simple_frame(widgets / "background.svg", 8, p["section"], p["hairline"], pad=10)
+    simple_frame(dialogs / "background.svg", 10, p["section"], p["hairline"], pad=10)
+    simple_frame(widgets / "tooltip.svg", 5, p["tooltip"], p["hairline"], pad=8)
 
 
 def gen_viewitem(p, widgets):
@@ -466,14 +596,12 @@ def gen_panel(p, widgets, solid_widgets):
         '<g id="hint-bottom-margin">' + rect(x + 20, y + h - 4, 4, 4, "#000", "0") + "</g>",
     ]
     # Floating variant: 9px rounded pill, 9px float padding (was 18px).
-    fx, fy, fw, fh, fr = 10, 80, 64, 48, 9
-    body += frame("floating", fx, fy, fw, fh, fr, p["window"], p["hairline"], 1)
-    body += [
-        '<g id="floating-hint-left-margin">' + rect(fx, fy + 24, fr, 4, "#000", "0") + "</g>",
-        '<g id="floating-hint-right-margin">' + rect(fx + fw - fr, fy + 24, fr, 4, "#000", "0") + "</g>",
-        '<g id="floating-hint-top-margin">' + rect(fx + 24, fy, 4, fr, "#000", "0") + "</g>",
-        '<g id="floating-hint-bottom-margin">' + rect(fx + 24, fy + fh - fr, 4, fr, "#000", "0") + "</g>",
-    ]
+    # Panel mengambang: bayangan 8px di padding frame floating.
+    fpad = 8
+    fx, fy, fw, fh, fr = 10 + fpad, 80 + fpad, 64, 48, 9
+    body.insert(0, shadow_defs(fpad, fr))
+    body += frame_shadow("floating", fx, fy, fw, fh, fr, p["window"], p["hairline"], 1, fpad)
+    body += frame_shadow_hints("floating", fr + fpad, fx, fy, fw)
     write_svg(widgets / "panel-background.svg", 110, 190, body)
     # Opaque (solid) variant: Plasma paints this when a window touches the panel.
     write_svg(solid_widgets / "panel-background.svg", 110, 190, body)

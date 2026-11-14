@@ -1,0 +1,4 @@
+module MaterialDark
+Switch 1.0 Switch.qml
+ComboBox 1.0 ComboBox.qml
+Button 1.0 Button.qml

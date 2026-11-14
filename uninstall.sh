@@ -11,7 +11,7 @@ CONF="${XDG_CONFIG_HOME:-$HOME/.config}"
 rm -f  "$DATA/color-schemes/MaterialDark.colors"
 rm -rf "$DATA/plasma/desktoptheme/material-dark-kde"
 rm -f  "$DATA/konsole/MaterialDark.colorscheme"
-rm -f  "$CONF/plasma-workspace/env/materialdark.sh"
+rm -f  "$CONF/plasma-workspace/env/materialdark.sh" "$CONF/plasma-workspace/env/materialdark-qml.sh"
 
 # plugin style + dekorasi: pakai manifest dari build, atau cari di lokasi umum
 SUDO=""; [ "$(id -u)" = 0 ] || SUDO="sudo"

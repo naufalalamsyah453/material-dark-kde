@@ -125,6 +125,14 @@ Pindahkan dulu ke Breeze di System Settings, lalu `./uninstall.sh`.
 
 ## Riwayat Perubahan
 
+**1.3.0 (belum dirilis)**
+- Style Qt Quick Controls `MaterialDark` (`qml/MaterialDark/`): Switch, ComboBox (field + popup), dan Button
+  untuk halaman QML (System Settings > Display, dialog Kirigami) kini sama bentuknya dengan
+  widget Qt dan Plasma. Aktif lewat `./install.sh --apply` (env `QT_QUICK_CONTROLS_STYLE`, fallback
+  `org.kde.desktop`); perlu logout/login.
+- Panah combobox/spinbox: segitiga tetap 8x4px, tidak lagi membesar di spinbox.
+- Tool button berteks berbentuk pil seperti tombol biasa.
+
 **1.2.2**
 - App menu, popup applet taskbar, serta OSD volume dan brightness kini punya border tipis
   1px `#453F42` — warna dan ketebalan yang sama dengan outline context menu Qt.

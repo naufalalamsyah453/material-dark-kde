@@ -60,6 +60,10 @@ if [ "$BUILD" = 1 ]; then
     cat > "$CONF/plasma-workspace/env/materialdark.sh" <<EOF
 export QT_PLUGIN_PATH="\$HOME/.local/lib/qt6/plugins\${QT_PLUGIN_PATH:+:\$QT_PLUGIN_PATH}"
 EOF
+    cat >> "$CONF/plasma-workspace/env/materialdark.sh" <<EOF
+export QML_IMPORT_PATH="\$HOME/.local/lib/qt6/qml\${QML_IMPORT_PATH:+:\$QML_IMPORT_PATH}"
+export QML2_IMPORT_PATH="\$HOME/.local/lib/qt6/qml\${QML2_IMPORT_PATH:+:\$QML2_IMPORT_PATH}"
+EOF
     echo "Plugin dipasang ke ~/.local. Logout/login diperlukan supaya QT_PLUGIN_PATH terbaca."
   fi
   echo "Application Style 'MaterialDesign' dan Window Decoration 'Material Dark' terpasang."
@@ -74,6 +78,12 @@ if [ "$APPLY" = 1 ]; then
     kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key theme "Material Dark"
     qdbus6 org.kde.KWin /KWin reconfigure 2>/dev/null || true
   fi
+  # style Qt Quick Controls: switch, dropdown, tombol di halaman QML (System Settings > Display, dll.)
+  mkdir -p "$CONF/plasma-workspace/env"
+  cat > "$CONF/plasma-workspace/env/materialdark-qml.sh" <<'EOF'
+export QT_QUICK_CONTROLS_STYLE=MaterialDark
+export QT_QUICK_CONTROLS_FALLBACK_STYLE=org.kde.desktop
+EOF
   echo "Diaktifkan. Logout lalu login lagi supaya semua app memuat style baru."
 else
   cat <<'EOF'

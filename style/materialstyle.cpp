@@ -15,6 +15,7 @@
 #include <QStandardPaths>
 #include <QStyleOption>
 #include <QTabBar>
+#include <QToolButton>
 
 #include <climits>
 
@@ -251,7 +252,13 @@ void MaterialStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
         drawButtonFace(p, opt, flat, def, false);
         return;
     }
-    case PE_PanelButtonTool:
+    case PE_PanelButtonTool: {
+        // tombol berteks (bukan hanya ikon) berbentuk pil seperti QPushButton; tombol ikon tetap 10px
+        const auto *tb = qobject_cast<const QToolButton *>(w);
+        const bool labelled = tb && tb->toolButtonStyle() != Qt::ToolButtonIconOnly && !tb->text().isEmpty() && !tb->autoRaise();
+        drawButtonFace(p, opt, true, false, !labelled);
+        return;
+    }
     case PE_IndicatorButtonDropDown: // bagian panah tombol-menu: datar juga, bukan pil tonal
         drawButtonFace(p, opt, true, false, true);
         return;
@@ -378,6 +385,31 @@ void MaterialStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
             p->setBrush(ring);
             p->drawEllipse(r.adjusted(5, 5, -5, -5));
         }
+        p->restore();
+        return;
+    }
+    case PE_IndicatorArrowUp:
+    case PE_IndicatorArrowDown:
+    case PE_IndicatorSpinUp:
+    case PE_IndicatorSpinDown: {
+        // segitiga kecil tetap (8x4px), tidak ikut membesar mengikuti area tombol seperti Fusion
+        const bool up = element == PE_IndicatorArrowUp || element == PE_IndicatorSpinUp;
+        const QPointF c = QRectF(opt->rect).center();
+        const qreal hw = 4.0;
+        const qreal hh = 2.0;
+        QPolygonF tri;
+        if (up) {
+            tri << QPointF(c.x() - hw, c.y() + hh) << QPointF(c.x() + hw, c.y() + hh) << QPointF(c.x(), c.y() - hh);
+        } else {
+            tri << QPointF(c.x() - hw, c.y() - hh) << QPointF(c.x() + hw, c.y() - hh) << QPointF(c.x(), c.y() + hh);
+        }
+        QColor col = opt->palette.color(QPalette::Text);
+        col.setAlphaF(isEnabled(opt) ? 0.8 : 0.38);
+        p->save();
+        p->setRenderHint(QPainter::Antialiasing);
+        p->setPen(Qt::NoPen);
+        p->setBrush(col);
+        p->drawPolygon(tri);
         p->restore();
         return;
     }

@@ -20,11 +20,16 @@ if(BUILD_DECORATION)
     find_package(KDecoration3 REQUIRED)
     set(MATERIAL_QT_PLUGIN_DIR ${KDE_INSTALL_PLUGINDIR})
     set(MATERIAL_DATA_DIR ${KDE_INSTALL_DATADIR})
+    set(MATERIAL_QML_DIR ${KDE_INSTALL_QMLDIR})
 else()
     include(GNUInstallDirs)
     set(MATERIAL_QT_PLUGIN_DIR ${CMAKE_INSTALL_LIBDIR}/qt6/plugins)
     set(MATERIAL_DATA_DIR ${CMAKE_INSTALL_DATADIR})
+    set(MATERIAL_QML_DIR ${CMAKE_INSTALL_LIBDIR}/qt6/qml)
 endif()
+
+# Style Qt Quick Controls 2 (Switch, ComboBox, Button) untuk halaman QML seperti System Settings
+install(DIRECTORY qml/MaterialDark DESTINATION ${MATERIAL_QML_DIR})
 
 if(BUILD_STYLE)
     add_subdirectory(style)

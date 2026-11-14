@@ -619,6 +619,27 @@ QRect MaterialStyle::progressFill(const QStyleOptionProgressBar *pb, const QRect
 void MaterialStyle::drawControl(ControlElement element, const QStyleOption *opt, QPainter *p, const QWidget *w) const
 {
     switch (element) {
+    case CE_ComboBoxLabel: {
+        // combobox editable: QCommonStyle mengisi kotak ikon dengan warna Base (kotak hitam persegi di
+        // bar lokasi Dolphin). Gambar ikonnya saja; latar sudah dari CC_ComboBox.
+        const auto *cb = qstyleoption_cast<const QStyleOptionComboBox *>(opt);
+        if (!cb || !cb->editable) {
+            break;
+        }
+        const QRect editRect = subControlRect(CC_ComboBox, cb, SC_ComboBoxEditField, w);
+        if (!cb->currentIcon.isNull()) {
+            const QIcon::Mode mode = (cb->state & State_Enabled) ? QIcon::Normal : QIcon::Disabled;
+            const QPixmap pm = cb->currentIcon.pixmap(cb->iconSize, w ? w->devicePixelRatio() : 1.0, mode);
+            QRect iconRect(editRect);
+            iconRect.setWidth(cb->iconSize.width() + 4);
+            iconRect = alignedRect(cb->direction, Qt::AlignLeft | Qt::AlignVCenter, iconRect.size(), editRect);
+            p->save();
+            p->setClipRect(editRect);
+            drawItemPixmap(p, iconRect, Qt::AlignCenter, pm);
+            p->restore();
+        }
+        return;
+    }
     case CE_PushButtonBevel:
         drawPrimitive(PE_PanelButtonCommand, opt, p, w);
         return;

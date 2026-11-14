@@ -9,7 +9,9 @@ import QtQuick.Shapes
 T.ComboBox {
     id: control
 
-    readonly property color primary: palette.highlight
+    SystemPalette { id: accent; colorGroup: SystemPalette.Active }
+
+    readonly property color primary: accent.highlight
     readonly property color textColor: palette.text
     // "outline" M3: 60% window + 40% teks; "outline variant": 80% window + 20% teks
     readonly property color outline: Qt.tint(palette.window, Qt.alpha(palette.windowText, 0.4))

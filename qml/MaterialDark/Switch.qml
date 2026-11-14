@@ -7,9 +7,11 @@ import QtQuick.Templates as T
 T.Switch {
     id: control
 
+    SystemPalette { id: accent; colorGroup: SystemPalette.Active }
+
     // palet dari color scheme aktif: highlight = primary, highlightedText = on-primary
-    readonly property color primary: palette.highlight
-    readonly property color onPrimary: palette.highlightedText
+    readonly property color primary: accent.highlight
+    readonly property color onPrimary: accent.highlightedText
     readonly property color primaryHover: Qt.tint(primary, Qt.rgba(1, 1, 1, 0.45))
     readonly property color trackOff: Qt.tint(palette.window, Qt.rgba(palette.windowText.r, palette.windowText.g, palette.windowText.b, 0.15))
 

@@ -7,6 +7,8 @@ import QtQuick.Controls.impl
 T.TextField {
     id: control
 
+    SystemPalette { id: accent; colorGroup: SystemPalette.Active }
+
     implicitWidth: implicitBackgroundWidth + leftInset + rightInset || Math.max(contentWidth, placeholder.implicitWidth) + leftPadding + rightPadding
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              contentHeight + topPadding + bottomPadding,
@@ -47,6 +49,6 @@ T.TextField {
                ? Qt.tint(control.palette.base, Qt.alpha(control.palette.windowText, 0.06))
                : control.palette.base
         border.width: control.activeFocus && control.enabled ? 2 : 0
-        border.color: control.palette.highlight
+        border.color: accent.highlight
     }
 }

@@ -6,7 +6,9 @@ import QtQuick.Templates as T
 T.RadioButton {
     id: control
 
-    readonly property color primary: palette.highlight
+    SystemPalette { id: accent; colorGroup: SystemPalette.Active }
+
+    readonly property color primary: accent.highlight
     readonly property color outline: Qt.tint(palette.window, Qt.alpha(palette.windowText, 0.4))
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,

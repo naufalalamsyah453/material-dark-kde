@@ -8,8 +8,11 @@ import QtQuick.Controls.impl
 T.ItemDelegate {
     id: control
 
+    SystemPalette { id: accent; colorGroup: SystemPalette.Active }
+
     readonly property bool selected: highlighted || checked
-    readonly property color contentColor: !enabled ? Qt.alpha(palette.text, 0.38) : (selected ? palette.highlightedText : palette.text)
+    readonly property color primary: accent.highlight
+    readonly property color contentColor: !enabled ? Qt.alpha(palette.text, 0.38) : (selected ? accent.highlightedText : palette.text)
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
@@ -30,7 +33,7 @@ T.ItemDelegate {
         display: control.display
         alignment: control.display === IconLabel.IconOnly || control.display === IconLabel.TextUnderIcon ? Qt.AlignCenter : Qt.AlignLeft | Qt.AlignVCenter
         icon: control.icon
-        text: control.text
+        text: control.text.replace(/&/g, "&&") // "&" literal di daftar, bukan mnemonic
         font: control.font
         color: control.contentColor
     }
@@ -47,7 +50,7 @@ T.ItemDelegate {
                 if (!control.enabled)
                     return "transparent";
                 if (control.selected)
-                    return control.palette.highlight;
+                    return control.primary;
                 return Qt.alpha(control.palette.text, control.down ? 0.12 : control.hovered ? 0.08 : 0.0);
             }
         }

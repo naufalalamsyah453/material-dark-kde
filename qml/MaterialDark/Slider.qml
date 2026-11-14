@@ -7,8 +7,10 @@ import QtQuick.Templates as T
 T.Slider {
     id: control
 
-    readonly property color primary: palette.highlight
-    readonly property color onPrimary: palette.highlightedText
+    SystemPalette { id: accent; colorGroup: SystemPalette.Active }
+
+    readonly property color primary: accent.highlight
+    readonly property color onPrimary: accent.highlightedText
     readonly property color trackColor: Qt.tint(palette.window, Qt.alpha(palette.windowText, 0.15))
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset, implicitHandleWidth + leftPadding + rightPadding)

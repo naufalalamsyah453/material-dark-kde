@@ -9,8 +9,10 @@ import QtQuick.Controls.impl
 T.Button {
     id: control
 
-    readonly property color primary: palette.highlight
-    readonly property color onPrimary: palette.highlightedText
+    SystemPalette { id: accent; colorGroup: SystemPalette.Active }
+
+    readonly property color primary: accent.highlight
+    readonly property color onPrimary: accent.highlightedText
     readonly property bool filled: highlighted || checked
     readonly property color contentColor: !enabled ? Qt.alpha(palette.buttonText, 0.38) : (filled && !flat ? onPrimary : palette.buttonText)
 

@@ -6,7 +6,9 @@ import QtQuick.Templates as T
 T.SpinBox {
     id: control
 
-    readonly property color primary: palette.highlight
+    SystemPalette { id: accent; colorGroup: SystemPalette.Active }
+
+    readonly property color primary: accent.highlight
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             contentItem.implicitWidth + 2 * 40)

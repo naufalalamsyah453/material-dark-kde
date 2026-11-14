@@ -2,3 +2,8 @@ module MaterialDark
 Switch 1.0 Switch.qml
 ComboBox 1.0 ComboBox.qml
 Button 1.0 Button.qml
+CheckBox 1.0 CheckBox.qml
+RadioButton 1.0 RadioButton.qml
+Slider 1.0 Slider.qml
+SpinBox 1.0 SpinBox.qml
+ToolButton 1.0 ToolButton.qml

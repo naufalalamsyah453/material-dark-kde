@@ -127,7 +127,7 @@ Pindahkan dulu ke Breeze di System Settings, lalu `./uninstall.sh`.
 
 **1.3.0**
 - Editor teks tanpa bingkai di dalam widget lain (bar lokasi) tidak lagi menggambar persegi hitam di luar sudut bulat.
-- Style Qt Quick Controls `MaterialDark` (`qml/MaterialDark/`): Switch, ComboBox (field + popup), dan Button
+- Style Qt Quick Controls `MaterialDark` (`qml/MaterialDark/`): Switch, CheckBox, RadioButton, Slider, SpinBox, ToolButton, ComboBox (field + popup), dan Button
   untuk halaman QML (System Settings > Display, dialog Kirigami) kini sama bentuknya dengan
   widget Qt dan Plasma. Aktif lewat `./install.sh --apply` (env `QT_QUICK_CONTROLS_STYLE`, fallback
   `org.kde.desktop`); perlu logout/login.

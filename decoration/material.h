@@ -10,8 +10,8 @@ constexpr int Border = 1;      // tebal bingkai jendela (outline variant)
 constexpr int Divider = 1;     // garis tipis di bawah titlebar
 constexpr int TitlePad = 6;    // jarak vertikal titlebar
 constexpr int ButtonSize = 24; // diameter tombol (lingkaran)
-constexpr int ButtonGap = 4;   // jarak antar tombol
-constexpr int SideMargin = 8;  // jarak tombol dari tepi
+constexpr int ButtonGap = 12;  // jarak antar tombol
+constexpr int SideMargin = 12; // jarak tombol dari tepi
 constexpr int ShadowSize = 24; // jari-jari bayangan jendela (elevation)
 constexpr int Radius = 12;     // jari-jari sudut jendela (M3: medium)
 

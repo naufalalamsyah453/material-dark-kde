@@ -8,3 +8,4 @@ Slider 1.0 Slider.qml
 SpinBox 1.0 SpinBox.qml
 ToolButton 1.0 ToolButton.qml
 TextField 1.0 TextField.qml
+ItemDelegate 1.0 ItemDelegate.qml

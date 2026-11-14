@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-VERSION = "1.3.3"
+VERSION = "1.3.4"
 
 # ---------------------------------------------------------------------------
 # Palettes: pink (default) and blue. Satu sumber untuk Plasma SVG, color

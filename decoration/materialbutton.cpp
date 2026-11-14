@@ -93,16 +93,19 @@ void Button::paint(QPainter *painter, const QRectF &repaintRegion)
     // Tombol maximize yang checked (jendela maksimal) TIDAK memakai lingkaran tetap:
     // ikon restore sudah cukup, dan lingkaran permanen membuat tombol tampak
     // "terpotong" oleh tombol di sebelahnya.
+    // Inset 2px: lingkaran tidak menyentuh tepi sel tombol, jadi tidak terlihat
+    // terpotong oleh tombol tetangga atau sudut titlebar.
     if (hover || down) {
+        const QRectF layer = g.adjusted(2, 2, -2, -2);
         if (isClose && (hover || down)) {
             painter->setBrush(Error);
-            painter->drawEllipse(g);
+            painter->drawEllipse(layer);
             glyph = OnError;
         } else {
-            QColor layer = d->fontColor();
-            layer.setAlphaF(down ? 0.16 : (hover ? 0.10 : 0.08));
-            painter->setBrush(layer);
-            painter->drawEllipse(g);
+            QColor layerColor = d->fontColor();
+            layerColor.setAlphaF(down ? 0.16 : (hover ? 0.10 : 0.08));
+            painter->setBrush(layerColor);
+            painter->drawEllipse(layer);
         }
     }
     if (!active) {

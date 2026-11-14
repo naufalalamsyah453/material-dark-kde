@@ -5,10 +5,10 @@
                 "Name": "Material Dark"
             }
         ],
-        "Description": "Material Design 3 dark: tonal surfaces, rounded shapes",
-        "Id": "material-dark",
+        "Description": "Material Design 3 dark: warm charcoal surfaces with soft pink accents, rounded shapes",
+        "Id": "material-dark-kde",
         "License": "MIT",
         "Name": "Material Dark",
-        "Version": "1.1"
+        "Version": "1.2.0"
     }
 }

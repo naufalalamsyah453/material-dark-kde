@@ -9,7 +9,7 @@ DATA="${XDG_DATA_HOME:-$HOME/.local/share}"
 CONF="${XDG_CONFIG_HOME:-$HOME/.config}"
 
 rm -f  "$DATA/color-schemes/MaterialDark.colors"
-rm -rf "$DATA/plasma/desktoptheme/material-dark"
+rm -rf "$DATA/plasma/desktoptheme/material-dark-kde"
 rm -f  "$DATA/konsole/MaterialDark.colorscheme"
 rm -f  "$CONF/plasma-workspace/env/materialdark.sh"
 

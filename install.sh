@@ -28,11 +28,12 @@ cp "$DIR/color-schemes/MaterialDark.colors" "$DATA/color-schemes/"
 
 # 2. Plasma Style (app menu, panel, tooltip, popup)
 mkdir -p "$DATA/plasma/desktoptheme"
-rm -rf "$DATA/plasma/desktoptheme/material-dark"
-cp -r "$DIR/plasma/desktoptheme/material-dark" "$DATA/plasma/desktoptheme/"
-cp "$DIR/color-schemes/MaterialDark.colors" "$DATA/plasma/desktoptheme/material-dark/colors"
+rm -rf "$DATA/plasma/desktoptheme/material-dark-kde"
+cp -r "$DIR/plasma/desktoptheme/material-dark-kde" "$DATA/plasma/desktoptheme/"
+cp "$DIR/color-schemes/MaterialDark.colors" "$DATA/plasma/desktoptheme/material-dark-kde/colors"
 # cache SVG Plasma (tombol, slider) basi bila SVG berubah
-rm -f "${XDG_CACHE_HOME:-$HOME/.cache}"/plasma-svgelements-material-dark* 2>/dev/null || true
+rm -f "${XDG_CACHE_HOME:-$HOME/.cache}"/plasma-svgelements-material-dark-kde* 2>/dev/null || true
+rm -f "${XDG_CACHE_HOME:-$HOME/.cache}"/plasma_theme_material-dark-kde.kcache 2>/dev/null || true
 
 # 3. Konsole
 mkdir -p "$DATA/konsole"
@@ -66,7 +67,7 @@ fi
 
 if [ "$APPLY" = 1 ]; then
   plasma-apply-colorscheme MaterialDark
-  plasma-apply-desktoptheme material-dark
+  plasma-apply-desktoptheme material-dark-kde
   if [ "$BUILD" = 1 ]; then
     kwriteconfig6 --file kdeglobals --group KDE --key widgetStyle materialdesign
     kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key library org.kde.material

@@ -1,9 +1,9 @@
 # Material Dark untuk KDE Plasma 6
 
-Tema gelap bergaya **Material Design 3** untuk KDE Plasma 6, dibuat sebagai pasangan dari
-[neobrutal-dark-kde](https://github.com/naufalalamsyah453/neobrutal-dark-kde) dengan struktur repo yang sama:
-permukaan tonal, bentuk membulat, tanpa outline tebal, dan *state layer* (hover 8%, fokus/tekan 10%)
-sebagai pengganti hard shadow.
+Tema gelap **Material Design 3** untuk KDE Plasma 6 dengan permukaan *warm charcoal* dan aksen
+**pink pastel** — terinspirasi Material You dan tampilan FydeOS di screenshot referensi. Semua
+kontrol dibuat membulat: tombol pil, field 10px, kartu 16px, menu 12px, dan *state layer*
+(hover 8%, tekan 12–22%) sebagai pengganti outline tebal.
 
 Dipasang sebagai tema **baru** bernama **"Material Dark"** — tidak menimpa tema yang sudah ada.
 
@@ -11,25 +11,59 @@ Dipasang sebagai tema **baru** bernama **"Material Dark"** — tidak menimpa tem
 
 ![Context menu Material Dark](preview-menu.png)
 
-## Pemetaan dari Neobrutal ke Material
+Kontrol Plasma (switch, slider, progress bar, text field):
 
-| Aspek | Neobrutal Dark | Material Dark |
-| --- | --- | --- |
-| Bentuk | Siku, tanpa sudut membulat | Pill (tombol), 4px (field), 12px (kartu / group box) |
-| Garis | Outline krem 2–3px | Outline 1px (*outline variant*), 2px primary saat fokus |
-| Kedalaman | Hard shadow kanan-bawah | Permukaan tonal + bayangan lembut (elevation) |
-| Aksen | Kuning / pink / biru | Satu warna **primary** `#D0BCFF` (ungu) + tonal |
-| Tombol | Timbul, bergeser saat ditekan | Default = *filled*, normal = *tonal*, flat = *text* |
-| Hover / tekan | Ganti warna shadow | *State layer* 8% / 10% |
-| Tab | Kotak kuning | Teks primary + indikator 3px |
-| Slider / progress | Kotak bergaris | Track 4px / pill, handle bulat (Qt dan slider panel Plasma) |
-| Context menu | Kotak kuning bergaris | Permukaan tonal, sudut 8px, item hover = state layer 10% (bukan isi primary penuh) |
-| Tombol Plasma (Start menu, panel) | Kotak timbul | Tonal / text button pil, hover 8%, tekan = primary 24%, fokus = cincin 2px |
-| Titlebar | Kuning, tombol kotak berwarna | Surface tonal, sudut jendela membulat 12px, tombol bulat, close = error |
-| Tooltip / preview taskbar | Kuning | Surface gelap `#36343B`, sudut 8px |
+![Kontrol Plasma Material Dark](preview-plasma.png)
 
-Palet dasar (M3 dark): surface `#141218`, surface container `#211F25` / `#2B2930`, on-surface `#E6E0E9`,
-primary `#D0BCFF`, on-primary `#381E72`, error `#F2B8B5`.
+## Palet
+
+| Peran | Warna |
+| --- | --- |
+| Primary / aksen | `#F2B8C6` |
+| On-primary (teks di atas pink) | `#2B1219` |
+| Primary container | `#FFD9E2` |
+| Surface (window) | `#1A1619` |
+| Surface container (popup/applet) | `#211C1F` |
+| Surface high (tombol) | `#2C2528` |
+| Surface highest (track slider) | `#3A3034` |
+| View / editor | `#100E11` |
+| Teks | `#F0E4E7` |
+| Teks nonaktif | `#CDB9BF` |
+| Tooltip | `#322A2E` |
+| Panel | `#161114` |
+| Error | `#F2B8B5` |
+
+Warna aksen Application Style dibaca dari `Colors:Window/DecorationFocus` di color scheme aktif,
+jadi mengganti color scheme ikut mengganti warna primary.
+
+## Sorotan
+
+- **Application Style "Material Dark"** — turunan Fusion (`QProxyStyle`) yang menggambar ulang
+  tombol, line edit, combobox, spinbox, checkbox, radio, slider, scrollbar, progress bar, tab,
+  header, tooltip, menu, dan seleksi list. Tombol berbentuk pil, hover/tekan memakai *state
+  layer* pink, slider memakai track pink dengan knob gelap bercincin.
+- **Window Decoration "Material Dark"** — plugin KDecoration3: titlebar surface tonal, sudut
+  jendela 12px, tombol bulat, close memakai warna error M3.
+- **Plasma Style "Material Dark"** (id `material-dark-kde`) — popup, panel, tooltip, item list,
+  tombol, line edit, **slider**, **switch**, **progress bar / OSD volume** senada. Panel
+  memakai permukaan `#161114`; versi mengambang memakai sudut 18px.
+- **Color scheme + Konsole** — satu skema gelap hangat dengan teks krem dan aksen pink; ANSI
+  yellow/blue tetap fungsional agar output terminal tetap terbaca.
+
+## Pemetaan gaya
+
+| Aspek | Material Dark |
+| --- | --- |
+| Bentuk | Pil (tombol), 10px (field), 12px (menu), 16px (kartu / dialog) |
+| Garis | Outline tipis (*outline variant*) saat idle, 2px primary saat fokus |
+| Kedalaman | Permukaan tonal + bayangan lembut (elevation) |
+| Hover / tekan | *State layer* 8% / 12%; tombol aktif/checked = pink 22% |
+| Tab | Teks primary + indikator |
+| Slider | Track 8px pink, knob gelap `#2B1219` dengan cincin primary |
+| Switch | Track pil pink saat aktif, knob gelap, ring fokus pink |
+| Context menu | Permukaan tonal, sudut 12px, item hover = *state layer* |
+| Titlebar | Surface tonal, sudut jendela 12px, tombol bulat, close = error |
+| Tooltip | Surface `#322A2E`, sudut 8px |
 
 ## Isi Repo
 
@@ -38,13 +72,11 @@ primary `#D0BCFF`, on-primary `#381E72`, error `#F2B8B5`.
 | `color-schemes/MaterialDark.colors` | Color scheme Plasma/KDE |
 | `style/` | Application Style (plugin Qt6 C++), nama **"Material Dark"** (key `materialdesign`) |
 | `decoration/` | Window Decoration (plugin KDecoration3 C++), nama **"Material Dark"** |
-| `plasma/desktoptheme/material-dark/` | Plasma Style (panel, popup, tooltip, item list, `widgets/button.svg`, `widgets/slider.svg`) |
+| `plasma/desktoptheme/material-dark-kde/` | Plasma Style (panel, popup, tooltip, item list, slider, switch, progress bar, line edit) |
 | `konsole/MaterialDark.colorscheme` | Skema warna Konsole |
 | `tools/preview.cpp` | Render galeri widget ke PNG (`-DBUILD_PREVIEW=ON`) |
+| `tools/gen-plasma-assets.py` | Generator SVG Plasma dari palet di atas |
 | `install.sh` / `uninstall.sh` | Pemasang dan penghapus tema |
-
-Warna aksen Application Style dibaca dari `Colors:Window/DecorationFocus` di color scheme aktif,
-jadi mengganti color scheme ikut mengganti warna primary.
 
 ## Kebutuhan
 
@@ -80,30 +112,41 @@ Pindahkan dulu ke Breeze di System Settings, lalu `./uninstall.sh`.
 
 ## Status Pengujian
 
-- Application Style: **sudah dikompilasi dan dirender offscreen** dengan Qt 6 (lihat gambar di atas).
-  Belum diuji menyeluruh di sesi Plasma sungguhan (terutama hover/pressed spinbox dan scrollbar).
-- Window Decoration: sudut membulat memakai `setBorderRadius` + `setBorderOutline` (KDecoration3 terbaru, pola yang sama
-  dengan Breeze), jadi **butuh Plasma/KWin yang mendukung API tersebut** (Plasma 6.5+). Kode sudah lolos pengecekan
-  sintaks terhadap header KDecoration3 master, tetapi belum dijalankan di KWin oleh penulis. Bila tampilan aneh,
-  pilih Breeze kembali dan laporkan.
-- Plasma Style: SVG sudah divalidasi sebagai XML, belum dilihat di Plasma. Jika sudut popup tampak
-  janggal, sesuaikan ukuran elemen di `plasma/desktoptheme/material-dark/widgets/background.svg`.
-- Context menu Qt (`QMenu`, termasuk menu "Session" di Start menu): **sudah dirender offscreen** (lihat `preview-menu.png`).
-  Sudut bulat memakai latar jendela menu yang tembus (`WA_TranslucentBackground`), jadi butuh compositing (ada di KWin).
-  Popup `QComboBox` tetap persegi.
-- Tombol dan slider Plasma (`widgets/button.svg`, `widgets/slider.svg`): SVG sudah divalidasi sebagai XML dan penyusunan
-  FrameSvg-nya disimulasikan ke PNG, tetapi **belum dilihat di Plasma sungguhan**. Setelah pasang, jalankan
-  `kquitapp6 plasmashell; kstart plasmashell`. Warna mengikuti color scheme lewat kelas `ColorScheme-*`.
+- Application Style: sudah dikompilasi dan dirender offscreen dengan Qt 6 (lihat gambar di atas).
+- Window Decoration: memakai `setBorderRadius` + `setBorderOutline` (KDecoration3, pola yang sama
+  dengan Breeze), butuh Plasma/KWin 6.5+. Bila tampil aneh, pilih Breeze kembali dan laporkan.
+- Plasma Style: seluruh SVG tervalidasi XML dan sudah diuji di sesi Plasma 6.8 (slider, switch,
+  progress bar/OSD volume, popup, tooltip). Cache Plasma dihapus otomatis oleh `install.sh`.
+- Context menu Qt (`QMenu`): dirender offscreen (lihat `preview-menu.png`); sudut bulat butuh
+  compositing KWin. Popup `QComboBox` mengikuti radius field.
+- Aplikasi QML/Kirigami yang memakai style Breeze untuk kontrol QQC2 tetap mengikuti warna color
+  scheme (gelap, teks krem, fokus pink, seleksi pink), tetapi bentuk pil hanya berlaku pada
+  kontrol QtWidgets dan komponen Plasma.
 
 ## Riwayat Perubahan
 
+**1.2.0**
+- Palet baru: seluruh aksen ungu M3 (`#D0BCFF`) diganti pink pastel `#F2B8C6` dengan permukaan
+  warm charcoal. Color scheme, Konsole, dan fallback di style/dekorasi ikut diselaraskan.
+- Plasma Style: tambah `widgets/switch.svg`, `widgets/bar_meter_horizontal.svg`,
+  `widgets/bar_meter_vertical.svg`, dan `widgets/lineedit.svg` agar toggle, OSD volume,
+  progress bar, dan field Plasma tidak lagi jatuh ke Breeze.
+- Radius diperbesar: field 4→10px, kartu/group box 12→16px, menu 8→12px, tool button 8→10px.
+- Slider: track 8px pink, knob gelap dengan cincin primary (Qt dan Plasma), switch knob gelap.
+- Panel mengambang memakai sudut 18px; dialog 16px; tooltip 8px.
+- Tombol Plasma yang aktif/checked kini memakai *state layer* pink 22%.
+- Panel Plasma memperbaiki struktur `panel-background.svg`: elemen tanpa prefix untuk panel
+  menempel (edge-to-edge) dan prefix `floating` untuk panel mengambang, plus salinan
+  `solid/widgets/panel-background.svg` untuk mode opaque. Sebelumnya panel tampil transparan
+  karena Plasma 6 mencari elemen tanpa prefix.
+- Id Plasma Style dibuat `material-dark-kde` agar tidak menimpa tema "Material Dark" lain
+  yang sudah ada di sistem; nama yang tampil tetap **Material Dark**.
+- Tambah generator `tools/gen-plasma-assets.py` supaya seluruh aset Plasma bisa diregenerasi
+  dari satu palet.
+- Preview baru: galeri widget, menu, dan kontrol Plasma.
+
 **1.1**
-- Menu: item terpilih tidak lagi berisi warna primary penuh (bawaan Fusion); sekarang state layer 10%. Centang, radio,
-  ikon, pintasan, panah submenu digambar ulang; sudut menu bulat; menu bar ikut.
-- Plasma Style: tambah `widgets/button.svg` (sebelumnya jatuh ke Breeze sehingga tombol Start menu seperti Session / Sleep
-  berbingkai ungu) dan `widgets/slider.svg` (slider volume / kecerahan di panel).
-- Tanda skala slider Qt kini terlihat (Fusion menggambarnya hampir sewarna latar gelap).
-- Bagian panah `QToolButton` bermenu kini datar, bukan kapsul tonal.
+- Rilis awal: color scheme, Application Style, Window Decoration, Plasma Style, dan Konsole.
 
 ## Lisensi
 

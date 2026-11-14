@@ -20,16 +20,16 @@
 
 namespace
 {
-constexpr int R_FIELD = 4;   // radius text field / combobox / spinbox (M3: extra-small)
-constexpr int R_CARD = 12;   // radius group box (M3: medium)
-constexpr int R_TOOL = 8;    // radius tool button
+constexpr int R_FIELD = 10;  // radius text field / combobox / spinbox (M3: small)
+constexpr int R_CARD = 16;   // radius group box (M3: medium)
+constexpr int R_TOOL = 10;   // radius tool button
 constexpr int ARROW_W = 28;  // lebar area panah combobox
 constexpr int SPIN_W = 22;   // lebar tombol spinbox
 constexpr int FIELD_H = 32;  // tinggi minimum field
 constexpr int BTN_H = 36;    // tinggi minimum tombol
 
 // Menu (M3 menu: container tonal, item dengan state layer, tanpa isi primary penuh)
-constexpr int R_MENU = 8;          // radius container menu
+constexpr int R_MENU = 12;         // radius container menu
 constexpr int MENU_PAD_X = 12;     // padding kiri / kanan di dalam item
 constexpr int MENU_ITEM_H = 32;    // tinggi minimum item
 constexpr int MENU_CHECK_W = 24;   // kolom tanda centang
@@ -140,16 +140,21 @@ bool isInteractive(const QWidget *w)
 
 MaterialStyle::MaterialStyle()
     : QProxyStyle(QStringLiteral("Fusion"))
-    , m_primary(208, 188, 255)
-    , m_onPrimary(56, 30, 114)
+    , m_primary(242, 184, 198)
+    , m_onPrimary(43, 18, 25)
 {
     loadColors();
 }
 
 // Ambil warna aksen dari kdeglobals supaya style ikut color scheme yang aktif.
+// MATERIALDARK_COLOR_SCHEME menunjuk file .colors lain; dipakai oleh alat preview
+// agar bisa merender tema tanpa mengubah color scheme sesi.
 void MaterialStyle::loadColors()
 {
-    const QString path = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QStringLiteral("/kdeglobals");
+    const QByteArray overridePath = qgetenv("MATERIALDARK_COLOR_SCHEME");
+    const QString path = overridePath.isEmpty()
+        ? QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QStringLiteral("/kdeglobals")
+        : QString::fromLocal8Bit(overridePath);
     QSettings s(path, QSettings::IniFormat);
     QColor c;
     if (parseRgb(s.value(QStringLiteral("Colors:Window/DecorationFocus")), &c)) {
@@ -805,8 +810,8 @@ void MaterialStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComp
         p->setRenderHint(QPainter::Antialiasing);
         if (sl->subControls & SC_SliderGroove) {
             const QRect gr = subControlRect(CC_Slider, sl, SC_SliderGroove, w);
-            const QRectF g = horiz ? QRectF(gr.left(), gr.center().y() - 1.5, gr.width(), 4) : QRectF(gr.center().x() - 1.5, gr.top(), 4, gr.height());
-            fillRound(p, g, withAlpha(text, 0.24), 2);
+            const QRectF g = horiz ? QRectF(gr.left(), gr.center().y() - 4, gr.width(), 8) : QRectF(gr.center().x() - 4, gr.top(), 8, gr.height());
+            fillRound(p, g, mix(sl->palette.color(QPalette::Window), text, 0.18), 4);
             const QRect hr = subControlRect(CC_Slider, sl, SC_SliderHandle, w);
             QRectF gi = g;
             if (horiz) {
@@ -823,7 +828,7 @@ void MaterialStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComp
                 }
             }
             if (en) {
-                fillRound(p, gi, m_primary, 2);
+                fillRound(p, gi, m_primary, 4);
             }
         }
         p->restore();
@@ -839,8 +844,15 @@ void MaterialStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComp
             if (act) {
                 fillRound(p, hr, withAlpha(m_primary, down ? 0.20 : 0.12), hr.width() / 2);
             }
-            const QColor fill = en ? m_primary : withAlpha(text, 0.38);
-            fillRound(p, hr.adjusted(3, 3, -3, -3), fill, (hr.width() - 6) / 2);
+            // Knob gelap dengan cincin primary, senada slider Plasma.
+            const QColor fill = en ? m_onPrimary : withAlpha(text, 0.38);
+            const QRectF knob = hr.adjusted(2, 2, -2, -2);
+            fillRound(p, knob, fill, qMin(knob.width(), knob.height()) / 2);
+            if (en) {
+                p->setBrush(Qt::NoBrush);
+                p->setPen(QPen(m_primary, 2));
+                p->drawEllipse(knob.adjusted(1, 1, -1, -1));
+            }
             p->restore();
         }
         return;

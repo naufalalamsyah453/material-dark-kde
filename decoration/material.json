@@ -1,6 +1,6 @@
 {
     "KPlugin": {
-        "Description": "Material Design 3 window decoration: tonal titlebar, round buttons, soft elevation",
+        "Description": "Material Design 3 window decoration: tonal titlebar, pink accents, round buttons",
         "EnabledByDefault": true,
         "Name": "Material Dark"
     },

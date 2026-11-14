@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="94" height="94">
+<g id="normal-topleft" transform="translate(10,10)"><path d="M0,16 A16,16 0 0 1 16,0 L16,16 Z" fill="#211C1F"/></g>
+<g id="normal-topright" transform="translate(58,10)"><path d="M0,0 A16,16 0 0 1 16,16 L0,16 Z" fill="#211C1F"/></g>
+<g id="normal-bottomleft" transform="translate(10,58)"><path d="M0,0 A16,16 0 0 0 16,16 L16,0 Z" fill="#211C1F"/></g>
+<g id="normal-bottomright" transform="translate(58,58)"><path d="M16,0 A16,16 0 0 1 0,16 L0,0 Z" fill="#211C1F"/></g>
+<g id="normal-top" transform="translate(26,10)"><rect x="0" y="0" width="32" height="16" fill="#211C1F"/></g>
+<g id="normal-bottom" transform="translate(26,58)"><rect x="0" y="0" width="32" height="16" fill="#211C1F"/></g>
+<g id="normal-left" transform="translate(10,26)"><rect x="0" y="0" width="16" height="32" fill="#211C1F"/></g>
+<g id="normal-right" transform="translate(58,26)"><rect x="0" y="0" width="16" height="32" fill="#211C1F"/></g>
+<g id="normal-center" transform="translate(26,26)"><rect x="0" y="0" width="32" height="32" fill="#211C1F"/></g>
+</svg>

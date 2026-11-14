@@ -26,27 +26,31 @@
 static QPalette materialPalette()
 {
     QPalette p;
-    p.setColor(QPalette::Window, QColor(20, 18, 24));
-    p.setColor(QPalette::WindowText, QColor(230, 224, 233));
-    p.setColor(QPalette::Base, QColor(15, 13, 19));
-    p.setColor(QPalette::AlternateBase, QColor(29, 27, 32));
-    p.setColor(QPalette::Text, QColor(230, 224, 233));
-    p.setColor(QPalette::Button, QColor(74, 68, 88));
-    p.setColor(QPalette::ButtonText, QColor(232, 222, 248));
-    p.setColor(QPalette::Highlight, QColor(208, 188, 255));
-    p.setColor(QPalette::HighlightedText, QColor(56, 30, 114));
-    p.setColor(QPalette::ToolTipBase, QColor(54, 52, 59));
-    p.setColor(QPalette::ToolTipText, QColor(230, 224, 233));
-    p.setColor(QPalette::Mid, QColor(73, 69, 79));
-    p.setColor(QPalette::PlaceholderText, QColor(147, 143, 153));
-    p.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(120, 116, 126));
-    p.setColor(QPalette::Disabled, QPalette::WindowText, QColor(120, 116, 126));
-    p.setColor(QPalette::Disabled, QPalette::Text, QColor(120, 116, 126));
+    p.setColor(QPalette::Window, QColor(26, 22, 25));
+    p.setColor(QPalette::WindowText, QColor(240, 228, 231));
+    p.setColor(QPalette::Base, QColor(16, 14, 17));
+    p.setColor(QPalette::AlternateBase, QColor(33, 28, 31));
+    p.setColor(QPalette::Text, QColor(240, 228, 231));
+    p.setColor(QPalette::Button, QColor(44, 37, 40));
+    p.setColor(QPalette::ButtonText, QColor(240, 228, 231));
+    p.setColor(QPalette::Highlight, QColor(242, 184, 198));
+    p.setColor(QPalette::HighlightedText, QColor(43, 18, 25));
+    p.setColor(QPalette::ToolTipBase, QColor(50, 42, 46));
+    p.setColor(QPalette::ToolTipText, QColor(240, 228, 231));
+    p.setColor(QPalette::Mid, QColor(58, 48, 52));
+    p.setColor(QPalette::PlaceholderText, QColor(205, 185, 191));
+    p.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(120, 106, 112));
+    p.setColor(QPalette::Disabled, QPalette::WindowText, QColor(120, 106, 112));
+    p.setColor(QPalette::Disabled, QPalette::Text, QColor(120, 106, 112));
     return p;
 }
 
 int main(int argc, char **argv)
 {
+    // argumen ke-3 (opsional): file .colors untuk mengambil warna aksen
+    if (argc > 3) {
+        qputenv("MATERIALDARK_COLOR_SCHEME", argv[3]);
+    }
     QApplication app(argc, argv);
     app.setStyle(new MaterialStyle);
     app.setPalette(materialPalette());

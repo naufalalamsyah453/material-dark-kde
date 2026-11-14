@@ -12,6 +12,17 @@ T.Switch {
     // palet dari color scheme aktif: highlight = primary, highlightedText = on-primary
     readonly property color primary: accent.highlight
     readonly property color onPrimary: accent.highlightedText
+
+    // di dalam baris terpilih/tertekan (latar pink) aksen dibalik supaya kontrol tidak menyatu dengan latar
+    readonly property bool onHighlight: {
+        let p = control.parent;
+        while (p) {
+            if (p.highlighted === true || p.down === true)
+                return true;
+            p = p.parent;
+        }
+        return false;
+    }
     readonly property color primaryHover: Qt.tint(primary, Qt.rgba(1, 1, 1, 0.45))
     readonly property color trackOff: Qt.tint(palette.window, Qt.rgba(palette.windowText.r, palette.windowText.g, palette.windowText.b, 0.15))
 
@@ -35,7 +46,7 @@ T.Switch {
             id: track
             anchors.fill: parent
             radius: height / 2
-            color: control.checked ? control.primary : control.trackOff
+            color: control.onHighlight ? (control.checked ? control.onPrimary : Qt.alpha(control.onPrimary, 0.25)) : (control.checked ? control.primary : control.trackOff)
             Behavior on color { ColorAnimation { duration: 120 } }
         }
 
@@ -59,9 +70,9 @@ T.Switch {
             radius: width / 2
             y: (parent.height - height) / 2
             x: 1.5 + control.visualPosition * (parent.width - parent.height)
-            color: control.onPrimary
+            color: control.onHighlight ? control.primary : control.onPrimary
             border.width: 2
-            border.color: (control.hovered || control.down) ? control.primaryHover : control.primary
+            border.color: control.onHighlight ? control.onPrimary : ((control.hovered || control.down) ? control.primaryHover : control.primary)
             Behavior on x {
                 enabled: !control.down
                 SmoothedAnimation { velocity: 200 }

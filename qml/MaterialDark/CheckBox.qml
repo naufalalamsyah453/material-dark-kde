@@ -11,6 +11,17 @@ T.CheckBox {
 
     readonly property color primary: accent.highlight
     readonly property color onPrimary: accent.highlightedText
+
+    // di dalam baris terpilih/tertekan (latar pink) aksen dibalik supaya kontrol tidak menyatu dengan latar
+    readonly property bool onHighlight: {
+        let p = control.parent;
+        while (p) {
+            if (p.highlighted === true || p.down === true)
+                return true;
+            p = p.parent;
+        }
+        return false;
+    }
     readonly property color outline: Qt.tint(palette.window, Qt.alpha(palette.windowText, 0.4))
     readonly property bool marked: checkState !== Qt.Unchecked
 
@@ -28,17 +39,17 @@ T.CheckBox {
         x: control.text ? (control.mirrored ? control.width - width - control.rightPadding : control.leftPadding) : control.leftPadding + (control.availableWidth - width) / 2
         y: control.topPadding + (control.availableHeight - height) / 2
         radius: 2
-        color: control.marked ? (control.enabled ? control.primary : Qt.alpha(control.palette.windowText, 0.38)) : "transparent"
+        color: control.marked ? (control.enabled ? (control.onHighlight ? control.onPrimary : control.primary) : Qt.alpha(control.palette.windowText, 0.38)) : "transparent"
         border.width: control.marked ? 0 : 2
         border.color: !control.enabled ? Qt.alpha(control.palette.windowText, 0.38)
-                      : (control.hovered ? control.palette.windowText : control.outline)
+                      : control.onHighlight ? Qt.alpha(control.onPrimary, 0.6) : (control.hovered ? control.palette.windowText : control.outline)
 
         Shape {
             anchors.fill: parent
             visible: control.marked
             ShapePath {
                 strokeWidth: 2
-                strokeColor: control.enabled ? control.onPrimary : control.palette.window
+                strokeColor: control.enabled ? (control.onHighlight ? control.primary : control.onPrimary) : control.palette.window
                 fillColor: "transparent"
                 capStyle: ShapePath.RoundCap
                 joinStyle: ShapePath.RoundJoin

@@ -9,6 +9,18 @@ T.RadioButton {
     SystemPalette { id: accent; colorGroup: SystemPalette.Active }
 
     readonly property color primary: accent.highlight
+    readonly property color onPrimary: accent.highlightedText
+
+    // di dalam baris terpilih/tertekan (latar pink) aksen dibalik supaya kontrol tidak menyatu dengan latar
+    readonly property bool onHighlight: {
+        let p = control.parent;
+        while (p) {
+            if (p.highlighted === true || p.down === true)
+                return true;
+            p = p.parent;
+        }
+        return false;
+    }
     readonly property color outline: Qt.tint(palette.window, Qt.alpha(palette.windowText, 0.4))
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
@@ -28,6 +40,7 @@ T.RadioButton {
         color: "transparent"
         border.width: 2
         border.color: !control.enabled ? Qt.alpha(control.palette.windowText, 0.38)
+                      : control.onHighlight ? control.onPrimary
                       : control.checked ? control.primary
                       : (control.hovered ? control.palette.windowText : control.outline)
 
@@ -37,7 +50,7 @@ T.RadioButton {
             radius: 4
             anchors.centerIn: parent
             visible: control.checked
-            color: control.enabled ? control.primary : Qt.alpha(control.palette.windowText, 0.38)
+            color: control.enabled ? (control.onHighlight ? control.onPrimary : control.primary) : Qt.alpha(control.palette.windowText, 0.38)
         }
     }
 

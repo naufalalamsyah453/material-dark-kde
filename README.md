@@ -23,9 +23,9 @@ Kontrol Plasma (switch, slider, progress bar, text field):
 | On-primary (teks di atas pink) | `#2B1219` |
 | Primary container | `#FFD9E2` |
 | Surface (window) | `#1A1619` |
-| Surface container (popup/applet) | `#211C1F` |
+| Surface container (popup/applet) | `#272225` |
 | Surface high (tombol) | `#322A2E` |
-| Surface highest (track slider) | `#3A3034` |
+| Surface highest (track slider) | `#3A3538` |
 | View / editor | `#100E11` |
 | Teks | `#F0E4E7` |
 | Teks nonaktif | `#CDB9BF` |

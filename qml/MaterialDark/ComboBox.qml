@@ -98,17 +98,16 @@ T.ComboBox {
         implicitWidth: 120
         implicitHeight: 32
         radius: 10
-        color: control.palette.base
-        border.width: (control.visualFocus || control.popup.visible) ? 2 : 1
-        border.color: {
+        // permukaan tonal tanpa outline saat idle; hover/terbuka menaikkan nada, fokus = cincin primary 2px
+        color: {
             if (!control.enabled)
-                return Qt.alpha(control.textColor, 0.12);
-            if (control.visualFocus || control.popup.visible)
-                return control.primary;
-            if (control.hovered)
-                return control.textColor;
-            return control.outline;
+                return Qt.alpha(control.palette.base, 0.6);
+            if (control.hovered || control.visualFocus || control.popup.visible)
+                return Qt.tint(control.palette.base, Qt.alpha(control.palette.windowText, 0.06));
+            return control.palette.base;
         }
+        border.width: (control.enabled && (control.visualFocus || control.popup.visible)) ? 2 : 0
+        border.color: control.primary
     }
 
     popup: T.Popup {

@@ -25,6 +25,7 @@ namespace
 constexpr int R_FIELD = 10;  // radius text field / combobox / spinbox (M3: small)
 constexpr int R_CARD = 16;   // radius group box (M3: medium)
 constexpr int R_TOOL = 10;   // radius tool button
+constexpr int R_ITEM = 8;    // radius seleksi item view (sidebar Dolphin, daftar Settings)
 constexpr int ARROW_W = 28;  // lebar area panah combobox
 constexpr int SPIN_W = 22;   // lebar tombol spinbox
 constexpr int FIELD_H = 32;  // tinggi minimum field
@@ -281,28 +282,32 @@ void MaterialStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
             }
             return;
         }
+        // Field Material: permukaan tonal tanpa outline saat idle. Hover hanya
+        // menaikkan nada permukaan; fokus memakai satu cincin pink 2px.
         const bool en = isEnabled(opt);
-        QColor line = outline(opt->palette);
-        qreal width = 1;
-        if (en && (opt->state & State_HasFocus)) {
-            line = m_primary;
-            width = 2;
-        } else if (en && (opt->state & State_MouseOver)) {
-            line = opt->palette.color(QPalette::Text);
-        } else if (!en) {
-            line = withAlpha(opt->palette.color(QPalette::Text), 0.12);
+        const bool focus = en && (opt->state & State_HasFocus);
+        const bool hover = en && (opt->state & State_MouseOver);
+        QColor fill = opt->palette.color(QPalette::Base);
+        if (!en) {
+            fill = withAlpha(fill, 0.6);
+        } else if (hover || focus) {
+            fill = mix(fill, opt->palette.color(QPalette::WindowText), 0.06);
         }
         p->save();
         p->setRenderHint(QPainter::Antialiasing);
-        fillRound(p, QRectF(opt->rect), opt->palette.color(QPalette::Base), R_FIELD);
-        strokeRound(p, QRectF(opt->rect), line, width, R_FIELD);
+        fillRound(p, QRectF(opt->rect), fill, R_FIELD);
+        if (focus) {
+            strokeRound(p, QRectF(opt->rect), m_primary, 2, R_FIELD);
+        }
         p->restore();
         return;
     }
     case PE_FrameGroupBox: {
+        // kartu tonal tanpa garis: pembeda section cukup dari warna permukaan
         p->save();
         p->setRenderHint(QPainter::Antialiasing);
-        strokeRound(p, QRectF(opt->rect), outlineVariant(opt->palette), 1, R_CARD);
+        const QColor tone = mix(opt->palette.color(QPalette::Window), opt->palette.color(QPalette::WindowText), 0.04);
+        fillRound(p, QRectF(opt->rect), tone, R_CARD);
         p->restore();
         return;
     }
@@ -312,15 +317,16 @@ void MaterialStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
         }
         [[fallthrough]];
     case PE_Frame:
-    case PE_FrameTabWidget: {
-        const QColor line = outlineVariant(opt->palette);
-        const QRect r = opt->rect;
-        p->fillRect(QRect(r.left(), r.top(), r.width(), 1), line);
-        p->fillRect(QRect(r.left(), r.bottom(), r.width(), 1), line);
-        p->fillRect(QRect(r.left(), r.top(), 1, r.height()), line);
-        p->fillRect(QRect(r.right(), r.top(), 1, r.height()), line);
+    case PE_FrameTabWidget:
+    case PE_FrameTabBarBase:
+    case PE_FrameDockWidget:
+    case PE_FrameStatusBarItem:
+    case PE_IndicatorToolBarSeparator:
+    case PE_IndicatorToolBarHandle:
+    case PE_IndicatorDockWidgetResizeHandle:
+        // Semua pemisah struktural lama dihilangkan. Section dibedakan lewat
+        // permukaan tonal (Window / Base / Button), bukan garis abu-abu.
         return;
-    }
     case PE_PanelMenu: {
         // surface container: sedikit lebih terang dari window
         const QColor surface = menuSurface(opt->palette);
@@ -426,14 +432,23 @@ void MaterialStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
         if (vi && vi->backgroundBrush.style() != Qt::NoBrush) {
             p->fillRect(opt->rect, vi->backgroundBrush);
         }
+        // Seleksi / hover berbentuk pil dengan margin kecil, bukan blok penuh
+        // selebar view. Berlaku untuk sidebar Dolphin, file view, dan daftar Settings.
+        QRectF r = QRectF(opt->rect).adjusted(3, 1, -3, -1);
+        if (r.width() < 10 || r.height() < 8) {
+            r = QRectF(opt->rect);
+        }
+        p->save();
+        p->setRenderHint(QPainter::Antialiasing);
         if (isEnabled(opt) && (opt->state & State_Selected)) {
-            p->fillRect(opt->rect, opt->palette.color(QPalette::Highlight));
+            fillRound(p, r, opt->palette.color(QPalette::Highlight), R_ITEM);
             if (opt->state & State_MouseOver) {
-                p->fillRect(opt->rect, withAlpha(opt->palette.color(QPalette::HighlightedText), 0.08));
+                fillRound(p, r, withAlpha(opt->palette.color(QPalette::HighlightedText), 0.08), R_ITEM);
             }
         } else if (isEnabled(opt) && (opt->state & State_MouseOver)) {
-            p->fillRect(opt->rect, withAlpha(opt->palette.color(QPalette::Text), 0.08));
+            fillRound(p, r, withAlpha(opt->palette.color(QPalette::Text), 0.08), R_ITEM);
         }
+        p->restore();
         return;
     }
     default:
@@ -706,9 +721,16 @@ void MaterialStyle::drawControl(ControlElement element, const QStyleOption *opt,
         if (isEnabled(opt) && (opt->state & (State_Sunken | State_MouseOver))) {
             p->fillRect(opt->rect, withAlpha(opt->palette.color(QPalette::WindowText), (opt->state & State_Sunken) ? 0.10 : 0.08));
         }
-        p->fillRect(QRect(opt->rect.left(), opt->rect.bottom(), opt->rect.width(), 1), outlineVariant(opt->palette));
         return;
     }
+    case CE_ToolBar:
+        // Toolbar datar: latar Window, tanpa garis tepi bawah dari Fusion.
+        p->fillRect(opt->rect, opt->palette.color(QPalette::Window));
+        return;
+
+    case CE_Splitter:
+        return; // pemisah splitter tanpa garis/grip, cukup jarak tonal
+
     case CE_ProgressBarGroove: {
         p->save();
         p->setRenderHint(QPainter::Antialiasing);
@@ -900,23 +922,22 @@ void MaterialStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComp
             break;
         }
         const bool en = isEnabled(sb);
-        QColor line = outline(sb->palette);
-        qreal width = 1;
-        if (en && (sb->state & State_HasFocus)) {
-            line = m_primary;
-            width = 2;
-        } else if (en && (sb->state & State_MouseOver)) {
-            line = sb->palette.color(QPalette::Text);
-        } else if (!en) {
-            line = withAlpha(sb->palette.color(QPalette::Text), 0.12);
+        const bool focus = en && (sb->state & State_HasFocus);
+        QColor fill = sb->palette.color(QPalette::Base);
+        if (!en) {
+            fill = withAlpha(fill, 0.6);
+        } else if (focus || (sb->state & State_MouseOver)) {
+            fill = mix(fill, sb->palette.color(QPalette::WindowText), 0.06);
         }
         p->save();
         p->setRenderHint(QPainter::Antialiasing);
         if (sb->frame) {
-            fillRound(p, QRectF(sb->rect), sb->palette.color(QPalette::Base), R_FIELD);
-            strokeRound(p, QRectF(sb->rect), line, width, R_FIELD);
+            fillRound(p, QRectF(sb->rect), fill, R_FIELD);
+            if (focus) {
+                strokeRound(p, QRectF(sb->rect), m_primary, 2, R_FIELD);
+            }
         } else {
-            p->fillRect(sb->rect, sb->palette.color(QPalette::Base));
+            p->fillRect(sb->rect, fill);
         }
         p->restore();
         if (sb->buttonSymbols == QAbstractSpinBox::NoButtons) {
@@ -959,20 +980,18 @@ void MaterialStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComp
         const bool focus = en && (cb->state & State_HasFocus);
         const QRect face = subControlRect(CC_ComboBox, cb, SC_ComboBoxFrame, w);
         const QRect arrow = subControlRect(CC_ComboBox, cb, SC_ComboBoxArrow, w);
-        QColor line = outline(cb->palette);
-        qreal width = 1;
-        if (focus || open) {
-            line = m_primary;
-            width = 2;
-        } else if (hov) {
-            line = cb->palette.color(QPalette::Text);
-        } else if (!en) {
-            line = withAlpha(cb->palette.color(QPalette::Text), 0.12);
+        QColor fill = cb->palette.color(QPalette::Base);
+        if (!en) {
+            fill = withAlpha(fill, 0.6);
+        } else if (hov || focus || open) {
+            fill = mix(fill, cb->palette.color(QPalette::WindowText), 0.06);
         }
         p->save();
         p->setRenderHint(QPainter::Antialiasing);
-        fillRound(p, QRectF(face), cb->palette.color(QPalette::Base), R_FIELD);
-        strokeRound(p, QRectF(face), line, width, R_FIELD);
+        fillRound(p, QRectF(face), fill, R_FIELD);
+        if (en && (focus || open)) {
+            strokeRound(p, QRectF(face), m_primary, 2, R_FIELD);
+        }
         p->restore();
         QStyleOption ao;
         ao.QStyleOption::operator=(*cb);

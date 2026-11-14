@@ -55,7 +55,7 @@ jadi mengganti color scheme ikut mengganti warna primary.
 | Aspek | Material Dark |
 | --- | --- |
 | Bentuk | Pil (tombol), 10px (field), 12px (menu), 16px (kartu / dialog) |
-| Garis | Outline tipis (*outline variant*) saat idle, 2px primary saat fokus |
+| Garis | Tanpa outline saat idle (permukaan tonal); 2px primary saat fokus |
 | Kedalaman | Permukaan tonal + bayangan lembut (elevation) |
 | Hover / tekan | *State layer* 8% / 12%; tombol aktif/checked = pink 22% |
 | Tab | Teks primary + indikator |

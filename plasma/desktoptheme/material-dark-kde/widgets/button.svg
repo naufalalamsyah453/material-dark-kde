@@ -4,7 +4,7 @@
 <style type="text/css" id="current-color-scheme">
 .ColorScheme-Text { color:#F0E4E7; }
 .ColorScheme-Highlight { color:#F2B8C6; }
-.ColorScheme-ButtonBackground { color:#2C2528; }
+.ColorScheme-ButtonBackground { color:#322A2E; }
 </style>
 </defs>
 <g id="normal-topleft" transform="translate(10,10)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,14 A14,14 0 0 1 14,0 L14,14 Z" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>

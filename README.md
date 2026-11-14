@@ -24,7 +24,7 @@ Kontrol Plasma (switch, slider, progress bar, text field):
 | Primary container | `#FFD9E2` |
 | Surface (window) | `#1A1619` |
 | Surface container (popup/applet) | `#211C1F` |
-| Surface high (tombol) | `#2C2528` |
+| Surface high (tombol) | `#322A2E` |
 | Surface highest (track slider) | `#3A3034` |
 | View / editor | `#100E11` |
 | Teks | `#F0E4E7` |

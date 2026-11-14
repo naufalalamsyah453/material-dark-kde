@@ -163,10 +163,14 @@ Pindahkan dulu ke Breeze di System Settings, lalu `./uninstall.sh`.
 
 ## Riwayat Perubahan
 
+**1.3.3**
+- **Sudut bersih di atas wallpaper**: mask window Plasma (`mask-*`) sekarang dibuat dengan radius yang sama dengan body frame, bukan menyalin mask 6px dari tema default. Selisih radius 10px vs 6px meninggalkan celah transparan tipis di sudut; di atas wallpaper celah itu terlihat sebagai gerigi ungu terang, dan hilang saat jendela lain menutupinya. Dengan mask yang sesuai, tepi body dan shape window menyatu, sehingga sudut tetap halus di atas wallpaper maupun aplikasi.
+- Panel tetap memakai alpha frame-nya sendiri: panel menempel rata ke tepi, sedangkan panel mengambang mengikuti pil 9px.
+
 **1.3.2**
 - **Bayangan shell kembali ke mekanisme native Plasma**: app menu, popup applet, OSD, tooltip,
-  dan panel mengambang kini memakai elemen `shadow-*` + `mask-*` + `shadow-hint-*` yang sama
-  dengan tema default. Plasma menggambar bayangan **di luar** window, jadi tepi popup tidak lagi
+  dan panel mengambang kini memakai elemen `shadow-*` + `mask-*` + `shadow-hint-*`. Mask dibuat
+  sesuai radius body; Plasma menggambar bayangan **di luar** window, jadi tepi popup tidak lagi
   berupa pita gelap dengan batas keras seperti pada 1.3.1; isi popup juga tidak bergeser karena
   tidak ada padding bayangan yang ditanam.
 - **Sudut tidak lagi bergerigi pada fractional scaling**: semua SVG hasil generator sekarang

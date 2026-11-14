@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-VERSION = "1.3.2"
+VERSION = "1.3.3"
 
 # ---------------------------------------------------------------------------
 # Palettes: pink (default) and blue. Satu sumber untuk Plasma SVG, color
@@ -284,6 +284,10 @@ def simple_frame(path, radius, fill, hairline, natural=64):
     for prefix in ("", "normal"):
         body += frame(prefix, 0, 0, natural, natural, radius, fill, hairline, 1)
         body += frame_hints(prefix, radius, 0, 0, natural)
+    # Mask frame must use the same radius as the visible body. The default
+    # theme's 6px mask made Plasmashell shape the window smaller than the
+    # painted corner, exposing a bright, aliased wallpaper sliver.
+    body += frame("mask", 0, 0, natural, natural, radius, "#000")
     body.append(SHADOW_TEMPLATE)
     write_svg(path, 157, 64, body)
 

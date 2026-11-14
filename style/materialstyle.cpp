@@ -3,6 +3,7 @@
 #include "materialstyle.h"
 
 #include <QAbstractButton>
+#include <QAbstractItemView>
 #include <QAbstractSpinBox>
 #include <QApplication>
 #include <QComboBox>
@@ -273,7 +274,11 @@ void MaterialStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
             return;
         }
         if (f && f->lineWidth == 0) {
-            p->fillRect(opt->rect, opt->palette.brush(QPalette::Base));
+            // editor tanpa bingkai di dalam widget lain (mis. bar lokasi Dolphin): latar dan sudut bulat milik
+            // widget induk, jadi jangan menimpa dengan persegi. Editor di item view tetap diisi.
+            if (!parent || qobject_cast<const QAbstractItemView *>(parent) || qobject_cast<const QAbstractItemView *>(parent->parentWidget())) {
+                p->fillRect(opt->rect, opt->palette.brush(QPalette::Base));
+            }
             return;
         }
         const bool en = isEnabled(opt);

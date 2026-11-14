@@ -26,6 +26,7 @@ OUTLINE_VARIANT = "#3A3034"
 TOOLTIP = "#322A2E"
 PANEL = "#161114"
 FIELD = "#1A1619"
+HAIRLINE = "#453F42"   # 1px border, same tone as the Qt context-menu outline
 
 
 def rect(x, y, w, h, color, opacity=None):
@@ -194,7 +195,7 @@ def simple_frame(path, radius, fill, natural=64):
     natural = max(natural, 2 * radius + 8)
     body = []
     for prefix in ("", "normal"):
-        body += frame(prefix, 10, 10, natural, natural, radius, fill)
+        body += frame(prefix, 10, 10, natural, natural, radius, fill, HAIRLINE, 1)
         body += frame_hints(prefix, radius, 10, 10, natural)
     write_svg(path, natural + 30, natural + 30, body)
 
@@ -400,7 +401,7 @@ def gen_panel():
     ]
     # Floating variant: 18px rounded pill, 18px float padding.
     fx, fy, fw, fh, fr = 10, 80, 64, 48, 18
-    body += frame("floating", fx, fy, fw, fh, fr, PANEL)
+    body += frame("floating", fx, fy, fw, fh, fr, PANEL, HAIRLINE, 1)
     body += [
         '<g id="floating-hint-left-margin">' + rect(fx, fy + 24, fr, 4, "#000", "0") + "</g>",
         '<g id="floating-hint-right-margin">' + rect(fx + fw - fr, fy + 24, fr, 4, "#000", "0") + "</g>",

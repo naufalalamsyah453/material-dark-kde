@@ -125,6 +125,12 @@ Pindahkan dulu ke Breeze di System Settings, lalu `./uninstall.sh`.
 
 ## Riwayat Perubahan
 
+**1.2.2**
+- App menu, popup applet taskbar, serta OSD volume dan brightness kini punya border tipis
+  1px `#453F42` — warna dan ketebalan yang sama dengan outline context menu Qt.
+- Panel mengambang dan tooltip memakai border yang sama; panel yang menempel ke tepi layar
+  tetap tanpa border agar tidak terlihat dobel di sisi layar.
+
 **1.2.1**
 - App menu / popup Plasma kembali punya permukaan solid: `widgets/background.svg` dan
   `dialogs/background.svg` kini menyediakan elemen tanpa prefix yang dicari Plasma 6.8

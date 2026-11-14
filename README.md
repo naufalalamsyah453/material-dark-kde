@@ -167,9 +167,11 @@ Pindahkan dulu ke Breeze di System Settings, lalu `./uninstall.sh`.
 - **Lingkaran hover tombol judul tidak lagi terpotong**: state layer (lingkaran hover/tekan pada
   close, minimize, maximize) sekarang diinset 2px di dalam sel tombol 24px. Sebelumnya lingkaran
   digambar persis sebesar sel, jadi tepinya menempel ke batas sel dan tampak terpotong oleh tombol
-  sebelahnya atau tepi titlebar — terutama pada jarak antar tombol 12px. Ikon tetap di tengah,
-  hanya lingkarannya yang lebih kecil. **Perlu logout/login** karena KWin menyimpan plugin
-  dekorasi yang sudah dimuat; mengganti dekorasi saat sesi berjalan tidak memuat ulang kode plugin.
+  sebelahnya atau tepi titlebar. Ikon tetap di tengah, hanya lingkarannya yang lebih kecil.
+- **Jarak antar tombol judul 12 → 16px**, jadi ketiga tombol punya ruang napas dan lingkarannya
+  tidak berdesakan.
+- Perubahan ini ada di plugin dekorasi, jadi **perlu logout/login**: KWin menyimpan plugin yang
+  sudah dimuat dan mengganti dekorasi saat sesi berjalan tidak memuat ulang kode plugin.
 
 **1.3.3**
 - **Sudut bersih di atas wallpaper**: mask window Plasma (`mask-*`) sekarang dibuat dengan radius yang sama dengan body frame, bukan menyalin mask 6px dari tema default. Selisih radius 10px vs 6px meninggalkan celah transparan tipis di sudut; di atas wallpaper celah itu terlihat sebagai gerigi ungu terang, dan hilang saat jendela lain menutupinya. Dengan mask yang sesuai, tepi body dan shape window menyatu, sehingga sudut tetap halus di atas wallpaper maupun aplikasi.

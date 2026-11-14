@@ -68,6 +68,12 @@ QColor outlineVariant(const QPalette &pal)
     return mix(pal.color(QPalette::WindowText), pal.color(QPalette::Window), 0.8);
 }
 
+// permukaan section (toolbar, panel tab, status bar): window + 4% warna teks, sedikit lebih terang dari window
+QColor sectionTone(const QPalette &pal)
+{
+    return mix(pal.color(QPalette::Window), pal.color(QPalette::WindowText), 0.04);
+}
+
 // permukaan menu: window + 6% warna teks (surface container)
 QColor menuSurface(const QPalette &pal)
 {
@@ -270,8 +276,8 @@ void MaterialStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
         const auto *f = qstyleoption_cast<const QStyleOptionFrame *>(opt);
         const QWidget *parent = w ? w->parentWidget() : nullptr;
         if (parent && (qobject_cast<const QAbstractSpinBox *>(parent) || qobject_cast<const QComboBox *>(parent))) {
-            // bagian dalam spinbox / combobox editable: bingkainya digambar oleh kontrol induk
-            p->fillRect(opt->rect, opt->palette.brush(QPalette::Base));
+            // bagian dalam spinbox / combobox editable: latar, sudut bulat, dan cincin fokus digambar
+            // oleh kontrol induk; jangan menimpa dengan persegi (bar lokasi Dolphin)
             return;
         }
         if (f && f->lineWidth == 0) {
@@ -316,8 +322,14 @@ void MaterialStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
             return; // garis tepi digambar bersama panel (PE_PanelMenu), supaya sudut ikut bulat
         }
         [[fallthrough]];
-    case PE_Frame:
     case PE_FrameTabWidget:
+        // panel tab: permukaan tonal sedikit lebih terang dari window, tanpa garis
+        p->fillRect(opt->rect, sectionTone(opt->palette));
+        return;
+    case PE_PanelStatusBar:
+        p->fillRect(opt->rect, sectionTone(opt->palette));
+        return;
+    case PE_Frame:
     case PE_FrameTabBarBase:
     case PE_FrameDockWidget:
     case PE_FrameStatusBarItem:
@@ -724,8 +736,8 @@ void MaterialStyle::drawControl(ControlElement element, const QStyleOption *opt,
         return;
     }
     case CE_ToolBar:
-        // Toolbar datar: latar Window, tanpa garis tepi bawah dari Fusion.
-        p->fillRect(opt->rect, opt->palette.color(QPalette::Window));
+        // Toolbar datar: permukaan tonal sedikit lebih terang dari window, tanpa garis tepi bawah.
+        p->fillRect(opt->rect, sectionTone(opt->palette));
         return;
 
     case CE_Splitter:

@@ -89,8 +89,11 @@ void Button::paint(QPainter *painter, const QRectF &repaintRegion)
     painter->setPen(Qt::NoPen);
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    // state layer lingkaran: hover 8%, tekan 12%; tombol close memakai warna error
-    if (hover || down || isChecked()) {
+    // state layer lingkaran: hover 8%, tekan 12%; tombol close memakai warna error.
+    // Tombol maximize yang checked (jendela maksimal) TIDAK memakai lingkaran tetap:
+    // ikon restore sudah cukup, dan lingkaran permanen membuat tombol tampak
+    // "terpotong" oleh tombol di sebelahnya.
+    if (hover || down) {
         if (isClose && (hover || down)) {
             painter->setBrush(Error);
             painter->drawEllipse(g);

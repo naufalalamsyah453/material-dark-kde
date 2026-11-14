@@ -5,7 +5,12 @@ Tema gelap **Material Design 3** untuk KDE Plasma 6 dengan permukaan *warm charc
 kontrol dibuat membulat: tombol pil, field 10px, kartu 16px, menu 12px, dan *state layer*
 (hover 8%, tekan 12–22%) sebagai pengganti outline tebal.
 
-Dipasang sebagai tema **baru** bernama **"Material Dark"** — tidak menimpa tema yang sudah ada.
+Tersedia dua varian warna dari satu sumber palet:
+
+- **Material Dark** (default) — permukaan *warm charcoal* + aksen pink `#F2B8C6`.
+- **Material Dark Blue** — permukaan *cool charcoal* + aksen biru `#A8C7FA`.
+
+Dipasang sebagai tema **baru** — tidak menimpa tema yang sudah ada.
 
 ![Galeri widget Material Dark](preview-style.png)
 
@@ -30,11 +35,28 @@ Kontrol Plasma (switch, slider, progress bar, text field):
 | Teks | `#F0E4E7` |
 | Teks nonaktif | `#CDB9BF` |
 | Tooltip | `#322A2E` |
-| Panel | `#161114` |
+| Panel | `#1A1619` |
 | Error | `#F2B8B5` |
 
+Varian biru:
+
+| Peran | Warna |
+| --- | --- |
+| Primary / aksen | `#A8C7FA` |
+| On-primary (teks di atas biru) | `#0A305F` |
+| Primary container | `#D3E3FD` |
+| Surface (window) | `#151A21` |
+| Surface container (popup/applet) | `#21262E` |
+| Surface high (tombol) | `#2B323C` |
+| Surface highest (track slider) | `#343940` |
+| View / editor | `#0D1117` |
+| Teks | `#E3E8F0` |
+| Teks nonaktif | `#B6C0CE` |
+| Panel | `#151A21` |
+
 Warna aksen Application Style dibaca dari `Colors:Window/DecorationFocus` di color scheme aktif,
-jadi mengganti color scheme ikut mengganti warna primary.
+jadi mengganti color scheme (pink ↔ biru) ikut mengganti warna primary, seleksi, dan fokus di
+style Qt, QML, dekorasi jendela, serta Plasma Style.
 
 ## Sorotan
 
@@ -43,12 +65,17 @@ jadi mengganti color scheme ikut mengganti warna primary.
   header, tooltip, menu, dan seleksi list. Tombol berbentuk pil, hover/tekan memakai *state
   layer* pink, slider memakai track pink dengan knob gelap bercincin.
 - **Window Decoration "Material Dark"** — plugin KDecoration3: titlebar surface tonal, sudut
-  jendela 12px, tombol bulat, close memakai warna error M3.
+  jendela 6px, tombol bulat, close memakai warna error M3. Tombol maximize tidak lagi memakai
+  lingkaran tetap saat jendela maksimal supaya tidak tampak terpotong oleh tombol sebelahnya.
 - **Plasma Style "Material Dark"** (id `material-dark-kde`) — popup, panel, tooltip, item list,
   tombol, line edit, **slider**, **switch**, **progress bar / OSD volume** senada. Panel
-  memakai permukaan `#161114`; versi mengambang memakai sudut 18px.
-- **Color scheme + Konsole** — satu skema gelap hangat dengan teks krem dan aksen pink; ANSI
-  yellow/blue tetap fungsional agar output terminal tetap terbaca.
+  memakai permukaan `#1A1619`; versi mengambang memakai sudut 9px.
+- **Plasma Style "Material Dark Blue"** (id `material-dark-kde-blue`) — aset yang sama,
+  diregenerasi dari palet biru.
+- **Color scheme + Konsole** — skema gelap hangat dengan teks krem dan aksen pink, plus
+  pasangan biru dingin; ANSI yellow/blue tetap fungsional agar output terminal tetap terbaca.
+- **Seleksi nonaktif** — saat jendela tidak aktif, pil seleksi memakai aksen gelap (bukan pink
+  penuh) sehingga teks terang dari delegate seperti sidebar Dolphin tetap terbaca.
 
 ## Pemetaan gaya
 
@@ -62,20 +89,23 @@ jadi mengganti color scheme ikut mengganti warna primary.
 | Slider | Track 8px pink, knob gelap `#2B1219` dengan cincin primary |
 | Switch | Track pil pink saat aktif, knob gelap, ring fokus pink |
 | Context menu | Permukaan tonal, sudut 12px, item hover = *state layer* |
-| Titlebar | Surface tonal, sudut jendela 12px, tombol bulat, close = error |
-| Tooltip | Surface `#322A2E`, sudut 8px |
+| Titlebar | Surface tonal, sudut jendela 6px, tombol bulat, close = error |
+| Tooltip | Surface `#322A2E`, sudut 5px (Plasma) |
 
 ## Isi Repo
 
 | Path | Keterangan |
 | --- | --- |
-| `color-schemes/MaterialDark.colors` | Color scheme Plasma/KDE |
+| `color-schemes/MaterialDark.colors` | Color scheme Plasma/KDE (pink) |
+| `color-schemes/MaterialDarkBlue.colors` | Color scheme Plasma/KDE (biru) |
 | `style/` | Application Style (plugin Qt6 C++), nama **"Material Dark"** (key `materialdesign`) |
 | `decoration/` | Window Decoration (plugin KDecoration3 C++), nama **"Material Dark"** |
-| `plasma/desktoptheme/material-dark-kde/` | Plasma Style (panel, popup, tooltip, item list, slider, switch, progress bar, line edit) |
-| `konsole/MaterialDark.colorscheme` | Skema warna Konsole |
+| `plasma/desktoptheme/material-dark-kde/` | Plasma Style pink (panel, popup, tooltip, item list, slider, switch, progress bar, line edit) |
+| `plasma/desktoptheme/material-dark-kde-blue/` | Plasma Style biru |
+| `konsole/MaterialDark.colorscheme` | Skema warna Konsole (pink) |
+| `konsole/MaterialDarkBlue.colorscheme` | Skema warna Konsole (biru) |
 | `tools/preview.cpp` | Render galeri widget ke PNG (`-DBUILD_PREVIEW=ON`) |
-| `tools/gen-plasma-assets.py` | Generator SVG Plasma dari palet di atas |
+| `tools/gen-plasma-assets.py` | Generator SVG Plasma + color scheme + Konsole untuk kedua varian |
 | `install.sh` / `uninstall.sh` | Pemasang dan penghapus tema |
 
 ## Kebutuhan
@@ -97,14 +127,20 @@ sudo pacman -S --needed base-devel cmake extra-cmake-modules \
 ```bash
 cd material-dark-kde
 chmod +x install.sh uninstall.sh
-./install.sh            # kompilasi + pasang (sudo)
-./install.sh --apply    # sama, lalu langsung diaktifkan
-./install.sh --user     # plugin ke ~/.local tanpa sudo (perlu logout/login)
-./install.sh --no-build # hanya warna, Plasma Style, Konsole
+./install.sh              # kompilasi + pasang (sudo), kedua varian
+./install.sh --apply      # sama, lalu aktifkan varian pink
+./install.sh --apply --blue   # sama, lalu aktifkan varian biru
+./install.sh --variant blue   # pasang kedua varian, aktifkan biru nanti secara manual
+./install.sh --user       # plugin ke ~/.local tanpa sudo (perlu logout/login)
+./install.sh --no-build   # hanya warna, Plasma Style, Konsole
 ```
 
-Aktifkan manual di **System Settings → Colors & Themes**: Colors, Plasma Style, Application Style,
-dan Window Decorations → "Material Dark". Logout lalu login sekali.
+Aktifkan manual di **System Settings → Colors & Themes**: Colors dan Plasma Style →
+"Material Dark" atau "Material Dark Blue"; Application Style dan Window Decorations →
+"Material Dark" (warna mengikuti color scheme). Logout lalu login sekali.
+
+Konsole: **Settings → Edit Current Profile → Appearance** → "Material Dark" atau
+"Material Dark Blue".
 
 ## Hapus / Kembali ke Breeze
 
@@ -126,6 +162,21 @@ Pindahkan dulu ke Breeze di System Settings, lalu `./uninstall.sh`.
 ## Riwayat Perubahan
 
 **1.3.0**
+- **Varian biru**: color scheme `MaterialDarkBlue`, Konsole `MaterialDarkBlue`, dan Plasma Style
+  `material-dark-kde-blue` dengan aksen `#A8C7FA` di atas permukaan cool charcoal. Pasang/aktifkan
+  lewat `./install.sh --apply --blue` atau `--variant blue`.
+- **Radius dipotong 50% khusus permukaan shell**: sudut jendela 12→6px, app menu/dialog Plasma
+  20→10px, item menu & taskbar 8→4px, field/search app menu 8→4px, panel mengambang 18→9px,
+  tombol Plasma 14→7px, tooltip 10→5px, dan OSD ikut dialog 10px. Kontrol **di dalam window**
+  (field, tombol, kartu, menu konteks, item list) tetap membulat seperti sebelumnya: 10/12/16px.
+  Bentuk pil dan lingkaran (`height/2`) tetap bulat.
+- **Seleksi nonaktif**: pil seleksi item view tidak lagi memakai pink penuh saat jendela tidak
+  aktif. Aksen diturunkan nilainya dan saturasinya dinaikkan (`#6E3D49` untuk pink, `#344A6E`
+  untuk biru) sehingga teks terang seperti sidebar Dolphin tetap kontras.
+- **Dekorasi jendela**: tombol maximize tidak lagi menggambar lingkaran *state layer* permanen
+  saat jendela maksimal; ikon restore sudah cukup dan tombol tidak tampak terpotong.
+- Generator `tools/gen-plasma-assets.py` kini menjadi satu sumber untuk kedua varian: SVG Plasma,
+  color scheme, tema Plasma, dan Konsole sekaligus. Nilai pink lama tetap identik.
 - Editor teks tanpa bingkai di dalam widget lain (bar lokasi) tidak lagi menggambar persegi hitam di luar sudut bulat.
 - Style Qt Quick Controls `MaterialDark` (`qml/MaterialDark/`): Switch, CheckBox, RadioButton, Slider, SpinBox, ToolButton, ComboBox (field + popup), dan Button
   untuk halaman QML (System Settings > Display, dialog Kirigami) kini sama bentuknya dengan

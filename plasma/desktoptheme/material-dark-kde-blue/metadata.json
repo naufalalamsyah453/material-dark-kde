@@ -1,0 +1,14 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Material Dark Blue"
+            }
+        ],
+        "Description": "Material Design 3 dark: cool charcoal surfaces with soft blue accents, rounded shapes",
+        "Id": "material-dark-kde-blue",
+        "License": "MIT",
+        "Name": "Material Dark Blue",
+        "Version": "1.3.0"
+    }
+}

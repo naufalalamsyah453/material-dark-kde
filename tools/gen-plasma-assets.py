@@ -1,32 +1,132 @@
 #!/usr/bin/env python3
-# Generate the Plasma Style SVGs for Material Dark from one palette.
+# Generate Plasma Style SVGs, color schemes, and Konsole schemes for Material Dark.
 # SPDX-License-Identifier: MIT
-"""Regenerate 9-slice / 3-slice Plasma assets with the Material Dark palette.
+"""Regenerate the Material Dark assets from one palette per variant.
 
-Usage: python3 tools/gen-plasma-assets.py
+Usage:
+    python3 tools/gen-plasma-assets.py            # both variants
+    python3 tools/gen-plasma-assets.py pink       # only pink
+    python3 tools/gen-plasma-assets.py blue       # only blue
 """
+import json
+import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-WIDGETS = ROOT / "plasma" / "desktoptheme" / "material-dark-kde" / "widgets"
-DIALOGS = ROOT / "plasma" / "desktoptheme" / "material-dark-kde" / "dialogs"
+VERSION = "1.3.0"
 
-# Material 3 dark palette (pink seed)
-PRIMARY = "#F2B8C6"          # #F2B8C6
-ON_PRIMARY = "#2B1219"
-PRIMARY_CONTAINER = "#FFD9E2"
-SURFACE = "#100E11"
-SURFACE_LOW = "#1A1619"
-SURFACE_CONTAINER = "#211C1F"
-SURFACE_HIGH = "#2C2528"
-SURFACE_HIGHEST = "#3A3034"
-TEXT = "#F0E4E7"
-OUTLINE = "#554A4F"
-OUTLINE_VARIANT = "#3A3034"
-TOOLTIP = "#322A2E"
-PANEL = "#161114"
-FIELD = "#1A1619"
-HAIRLINE = "#453F42"   # 1px border, same tone as the Qt context-menu outline
+# ---------------------------------------------------------------------------
+# Palettes: pink (default) and blue. Satu sumber untuk Plasma SVG, color
+# scheme, dan Konsole. Semua radius tetap di sini sudah dipotong 50%.
+# ---------------------------------------------------------------------------
+PALETTES = {
+    "pink": {
+        "id": "material-dark-kde",
+        "name": "Material Dark",
+        "scheme": "MaterialDark",
+        "desc": "Material Design 3 dark: warm charcoal surfaces with soft pink accents, rounded shapes",
+        "primary": "#F2B8C6",
+        "on_primary": "#2B1219",
+        "primary_container": "#FFD9E2",
+        "view": "#100E11",
+        "view_alt": "#211C1F",
+        "window": "#1A1619",
+        "section": "#272225",
+        "button": "#322A2E",
+        "button_alt": "#3A3034",
+        "track": "#3A3538",
+        "field": "#1D1B1E",
+        "text": "#F0E4E7",
+        "inactive": "#CDB9BF",
+        "hairline": "#453F42",
+        "tooltip": "#322A2E",
+        "titlebar": "#2C2528",
+        "header_inactive": "#181417",
+        "wm_inactive": "#A09096",
+        "disabled": "#463C40",
+        "inactive_effect": "#968288",
+        "error": "#F2B8B5",
+        "warning": "#F5D3A8",
+        "positive": "#A8DAB5",
+        "link": "#FFD9E2",
+        "visited": "#D8B4C0",
+        "sel_fg_inactive": "#4A1F2A",
+        "sel_link": "#004A77",
+        "sel_neg": "#93000A",
+        "sel_neutral": "#6E3C00",
+        "sel_pos": "#005023",
+        "sel_visited": "#652564",
+        "konsole_bg": "#141013",
+        "konsole_faint": "#1A1619",
+        "konsole_intense": "#100E11",
+        "ansi": [
+            ("#3A3034", "#2B2528", "#A09096"),
+            ("#F2B8B5", "#BE9290", "#FFDAD6"),
+            ("#A8DAB5", "#84AC8F", "#C8F0D0"),
+            ("#F5D3A8", "#C4A886", "#FFE8C8"),
+            ("#A8C7FA", "#849CC4", "#D3E3FD"),
+            ("#F2B8C6", "#C2939E", "#FFD9E2"),
+            ("#80D5E0", "#64A7B0", "#B2EBF2"),
+            ("#F0E4E7", "#CDB9BF", "#FFFFFF"),
+        ],
+    },
+    "blue": {
+        "id": "material-dark-kde-blue",
+        "name": "Material Dark Blue",
+        "scheme": "MaterialDarkBlue",
+        "desc": "Material Design 3 dark: cool charcoal surfaces with soft blue accents, rounded shapes",
+        "primary": "#A8C7FA",
+        "on_primary": "#0A305F",
+        "primary_container": "#D3E3FD",
+        "view": "#0D1117",
+        "view_alt": "#1C2026",
+        "window": "#151A21",
+        "section": "#21262E",
+        "button": "#2B323C",
+        "button_alt": "#343C48",
+        "track": "#343940",
+        "field": "#1D2229",
+        "text": "#E3E8F0",
+        "inactive": "#B6C0CE",
+        "hairline": "#3E434A",
+        "tooltip": "#2B323C",
+        "titlebar": "#252A33",
+        "header_inactive": "#13181F",
+        "wm_inactive": "#8C96A8",
+        "disabled": "#464E5A",
+        "inactive_effect": "#8892A2",
+        "error": "#F2B8B5",
+        "warning": "#F5D3A8",
+        "positive": "#A8DAB5",
+        "link": "#D3E3FD",
+        "visited": "#C9B8E8",
+        "sel_fg_inactive": "#1D3A5F",
+        "sel_link": "#00325B",
+        "sel_neg": "#690005",
+        "sel_neutral": "#402D00",
+        "sel_pos": "#00391C",
+        "sel_visited": "#3F2A55",
+        "konsole_bg": "#10141A",
+        "konsole_faint": "#151A21",
+        "konsole_intense": "#0D1117",
+        "ansi": [
+            ("#2B323C", "#222830", "#8C96A8"),
+            ("#F2B8B5", "#BE9290", "#FFDAD6"),
+            ("#A8DAB5", "#84AC8F", "#C8F0D0"),
+            ("#F5D3A8", "#C4A886", "#FFE8C8"),
+            ("#A8C7FA", "#849CC4", "#D3E3FD"),
+            ("#C9B8E8", "#9E90B6", "#E0D3F8"),
+            ("#80D5E0", "#64A7B0", "#B2EBF2"),
+            ("#E3E8F0", "#B6C0CE", "#FFFFFF"),
+        ],
+    },
+}
+
+
+def csv(hex_color):
+    h = hex_color.lstrip("#")
+    return f"{int(h[0:2], 16)},{int(h[2:4], 16)},{int(h[4:6], 16)}"
 
 
 def rect(x, y, w, h, color, opacity=None):
@@ -67,8 +167,6 @@ def frame(prefix, x, y, w, h, r, fill, border=None, bw=2, pad=0):
         return rr_parts(prefix, x, y, w, h, r, fill)
 
     ir = max(1, r - bw)
-    # The inner arc keeps the outer corner centre and shrinks its radius by the
-    # border width, so the ring is evenly thick along both edges.
     tl_outer = f"M0,{r} A{r},{r} 0 0 1 {r},0 L{r},{r} Z"
     tl_inner = f"M{bw},{r} A{ir},{ir} 0 0 1 {r},{bw} L{r},{r} Z"
     tr_outer = f"M0,0 A{r},{r} 0 0 1 {r},{r} L0,{r} Z"
@@ -79,7 +177,6 @@ def frame(prefix, x, y, w, h, r, fill, border=None, bw=2, pad=0):
     br_inner = f"M{r - bw},0 A{ir},{ir} 0 0 1 0,{r - bw} L0,0 Z"
 
     def wrap(name, gx, gy, bw_box, bh_box, art, ax, ay):
-        """Place art in a slice box, optionally inset by ``pad`` + spacer."""
         if not pad:
             return f'<g id="{name}" transform="translate({gx},{gy})">{art}</g>'
         return (
@@ -124,44 +221,24 @@ def frame(prefix, x, y, w, h, r, fill, border=None, bw=2, pad=0):
         corner(p + "bottomleft", x, y + h - r, bl_outer, bl_inner, bottom=True),
         corner(p + "bottomright", x + w - r, y + h - r, br_outer, br_inner, right=True, bottom=True),
         wrap(
-            p + "top",
-            x + r,
-            y - pad,
-            top_box[0],
-            top_box[1],
+            p + "top", x + r, y - pad, top_box[0], top_box[1],
             rect(0, 0, w - 2 * r, bw, border) + rect(0, bw, w - 2 * r, r - bw, fill),
-            0,
-            pad,
+            0, pad,
         ),
         wrap(
-            p + "bottom",
-            x + r,
-            y + h - r,
-            top_box[0],
-            top_box[1],
+            p + "bottom", x + r, y + h - r, top_box[0], top_box[1],
             rect(0, 0, w - 2 * r, r - bw, fill) + rect(0, r - bw, w - 2 * r, bw, border),
-            0,
-            0,
+            0, 0,
         ),
         wrap(
-            p + "left",
-            x - pad,
-            y + r,
-            left_box[0],
-            left_box[1],
+            p + "left", x - pad, y + r, left_box[0], left_box[1],
             rect(0, 0, bw, h - 2 * r, border) + rect(bw, 0, r - bw, h - 2 * r, fill),
-            pad,
-            0,
+            pad, 0,
         ),
         wrap(
-            p + "right",
-            x + w - r,
-            y + r,
-            left_box[0],
-            left_box[1],
+            p + "right", x + w - r, y + r, left_box[0], left_box[1],
             rect(0, 0, r - bw, h - 2 * r, fill) + rect(r - bw, 0, bw, h - 2 * r, border),
-            0,
-            0,
+            0, 0,
         ),
         f'<g id="{p}center" transform="translate({x + r},{y + r})">' + rect(0, 0, w - 2 * r, h - 2 * r, fill) + "</g>",
     ]
@@ -188,34 +265,32 @@ def write_svg(path, width, height, body):
     print("wrote", path.relative_to(ROOT))
 
 
-def simple_frame(path, radius, fill, natural=64):
+def simple_frame(path, radius, fill, hairline, natural=64):
     # Plasma 6.8 looks up dialog/popup frames with an empty prefix, while a few
     # components still request "normal". Emit both sets so the surface is never
     # silently dropped (that made app-menu popups fully transparent).
     natural = max(natural, 2 * radius + 8)
     body = []
     for prefix in ("", "normal"):
-        body += frame(prefix, 10, 10, natural, natural, radius, fill, HAIRLINE, 1)
+        body += frame(prefix, 10, 10, natural, natural, radius, fill, hairline, 1)
         body += frame_hints(prefix, radius, 10, 10, natural)
     write_svg(path, natural + 30, natural + 30, body)
 
 
-def gen_backgrounds():
-    # Applet / popup surface (raised container), 16px content padding.
-    simple_frame(WIDGETS / "background.svg", 16, SURFACE_CONTAINER)
-    # Dialog surface (app menu): roomier padding so the header is not flush.
-    simple_frame(DIALOGS / "background.svg", 20, SURFACE_CONTAINER)
-    # Tooltip: dark elevated surface, compact padding.
-    simple_frame(WIDGETS / "tooltip.svg", 10, TOOLTIP)
+def gen_backgrounds(p, widgets, dialogs):
+    # Setengah dari radius sebelumnya: 16 -> 8, 20 -> 10, 10 -> 5.
+    simple_frame(widgets / "background.svg", 8, p["section"], p["hairline"])
+    simple_frame(dialogs / "background.svg", 10, p["section"], p["hairline"])
+    simple_frame(widgets / "tooltip.svg", 5, p["tooltip"], p["hairline"])
 
 
-def gen_viewitem():
-    w, h, r = 48, 40, 8
+def gen_viewitem(p, widgets):
+    w, h, r = 48, 40, 4
     states = [
         ("normal", 10, None, "0"),
-        ("hover", 70, TEXT, "0.08"),
-        ("selected", 130, PRIMARY, None),
-        ("selected+hover", 190, PRIMARY_CONTAINER, None),
+        ("hover", 70, p["text"], "0.08"),
+        ("selected", 130, p["primary"], None),
+        ("selected+hover", 190, p["primary_container"], None),
     ]
     body = []
     for name, y, color, opacity in states:
@@ -233,16 +308,11 @@ def gen_viewitem():
             ]
         else:
             body += rr_parts(name, 10, y, w, h, r, color)
-            # opacity only for the hover state
             if opacity:
                 for i in range(len(body) - 9, len(body)):
                     body[i] = body[i].replace('fill="' + color + '"', f'fill="{color}" fill-opacity="{opacity}"')
     body.append('<g id="hint-tile-center">' + rect(10, 260, 8, 8, "#000", "0") + "</g>")
-    write_svg(WIDGETS / "viewitem.svg", 90, 300, body)
-
-
-def cap_left(x, y, r, color):
-    return f'<g id="CAPID-left" transform="translate({x},{y})"><path d="M{r},0 A{r},{r} 0 0 0 {r},{2 * r} L{r},0 Z" fill="{color}"/><rect x="0" y="{r}" width="{r}" height="0.001" fill="{color}"/></g>'
+    write_svg(widgets / "viewitem.svg", 90, 300, body)
 
 
 def pill3(prefix, x, y, width, height, color):
@@ -255,12 +325,11 @@ def pill3(prefix, x, y, width, height, color):
     ]
 
 
-def gen_bar(path, vertical=False):
+def gen_bar(path, p, vertical=False):
     height = 12
-    r = height // 2
     body = []
-    body += pill3("bar-inactive", 10, 10, 28, height, SURFACE_HIGHEST)
-    body += pill3("bar-active", 10, 40, 28, height, PRIMARY)
+    body += pill3("bar-inactive", 10, 10, 28, height, p["track"])
+    body += pill3("bar-active", 10, 40, 28, height, p["primary"])
     if vertical:
         # vertical meter: same assets but 12px wide bars
         pass
@@ -270,15 +339,14 @@ def gen_bar(path, vertical=False):
     write_svg(path, 90, 120, body)
 
 
-def gen_switch():
+def gen_switch(p, widgets):
     h = 22
-    r = h // 2
     body = []
-    body += pill3("inactive", 10, 10, 22, h, SURFACE_HIGHEST)
-    body += pill3("active", 10, 42, 22, h, PRIMARY)
+    body += pill3("inactive", 10, 10, 22, h, p["track"])
+    body += pill3("active", 10, 42, 22, h, p["primary"])
 
-    # Handle: 24x24 cell, 19px dark knob with a pink ring so it reads on
-    # both the dark and the pink track.
+    # Handle: 24x24 cell, 19px dark knob with an accent ring so it reads on
+    # both the dark and the accent track.
     def handle(name, y, fill, ring, ring_opacity=1.0):
         return (
             f'<g id="{name}" transform="translate(10,{y})">'
@@ -287,39 +355,37 @@ def gen_switch():
             + "</g>"
         )
 
-    body.append(handle("handle", 80, ON_PRIMARY, PRIMARY))
-    body.append(handle("handle-active", 110, ON_PRIMARY, PRIMARY))
-    body.append(handle("handle-hover", 140, ON_PRIMARY, PRIMARY_CONTAINER))
-    body.append(handle("handle-pressed", 170, ON_PRIMARY, PRIMARY_CONTAINER))
+    body.append(handle("handle", 80, p["on_primary"], p["primary"]))
+    body.append(handle("handle-active", 110, p["on_primary"], p["primary"]))
+    body.append(handle("handle-hover", 140, p["on_primary"], p["primary_container"]))
+    body.append(handle("handle-pressed", 170, p["on_primary"], p["primary_container"]))
     body.append(
         '<g id="handle-focus" transform="translate(10,200)">'
         + rect(0, 0, 32, 32, "#000", "0")
-        + f'<circle cx="16" cy="16" r="13" fill="none" stroke="{PRIMARY}" stroke-width="2" stroke-opacity="0.7"/>'
+        + f'<circle cx="16" cy="16" r="13" fill="none" stroke="{p["primary"]}" stroke-width="2" stroke-opacity="0.7"/>'
         + "</g>"
     )
     body.append('<g id="handle-shadow" transform="translate(10,240)">' + rect(0, 0, 24, 24, "#000", "0") + "</g>")
     body.append('<g id="hint-bar-size">' + rect(10, 270, 44, h, "#000", "0") + "</g>")
     body.append('<g id="hint-stretch-borders">' + rect(10, 296, 4, 4, "#000", "0") + "</g>")
-    write_svg(WIDGETS / "switch.svg", 90, 320, body)
+    write_svg(widgets / "switch.svg", 90, 320, body)
 
 
-def gen_lineedit():
-    w, h, r, bw = 64, 36, 8, 2
-    # Material filled text field: no outline at rest, a subtle hover surface and
-    # a pink focus ring. The overlays are padded by the corner radius: the QML
-    # TextField anchors them with -margins, so the padded ring lands exactly on
-    # the base edge instead of drawing a second, larger ring around it.
+def gen_lineedit(p, widgets):
+    # Base setengah dari 8 -> 4. Base memakai permukaan view, hover/fokus
+    # memakai field tonal; fokus tetap satu cincin primary 2px.
+    w, h, r, bw = 64, 36, 4, 2
     rows = [
-        ("base", 10, FIELD, None),
-        ("hover", 70, SURFACE_HIGH, OUTLINE_VARIANT),
-        ("focus", 130, SURFACE_HIGH, PRIMARY),
-        ("focusframe", 190, SURFACE_HIGH, PRIMARY),
+        ("base", 10, p["view"], None),
+        ("hover", 70, p["field"], p["field"]),
+        ("focus", 130, p["field"], p["primary"]),
+        ("focusframe", 190, p["field"], p["primary"]),
     ]
     body = []
     # Draw the focus overlay above the base (PlasmaComponents TextField checks
     # this id and otherwise puts the focus layer behind the background).
     body.append('<g id="hint-focus-over-base">' + rect(10, 10, 4, 4, "#000", "0") + "</g>")
-    body += frame("base", 10, 10, w, h, r, FIELD)
+    body += frame("base", 10, 10, w, h, r, p["view"])
     for name, y, fill, border in rows[1:]:
         body += frame(name, 10, y, w, h, r, fill, border, bw, pad=r)
         body += [
@@ -328,36 +394,36 @@ def gen_lineedit():
             f'<g id="{name}-hint-top-margin">' + rect(10 + 20, y, 4, r, "#000", "0") + "</g>",
             f'<g id="{name}-hint-bottom-margin">' + rect(10 + 20, y + h - r, 4, r, "#000", "0") + "</g>",
         ]
-    write_svg(WIDGETS / "lineedit.svg", 100, 250, body)
+    write_svg(widgets / "lineedit.svg", 100, 250, body)
 
 
-def gen_slider():
+def gen_slider(p, widgets):
     body = []
     body.append('<g id="hint-handle-size">' + rect(10, 10, 20, 20, "#000", "0") + "</g>")
     for direction, y in (("horizontal", 36), ("vertical", 200)):
         body.append(
             f'<g id="{direction}-slider-handle" transform="translate(10,{y})">'
             + rect(0, 0, 20, 20, "#000", "0")
-            + f'<circle cx="10" cy="10" r="8" fill="{ON_PRIMARY}" stroke="{PRIMARY}" stroke-width="2"/>'
+            + f'<circle cx="10" cy="10" r="8" fill="{p["on_primary"]}" stroke="{p["primary"]}" stroke-width="2"/>'
             + "</g>"
         )
         body.append(f'<g id="{direction}-slider-shadow" transform="translate(10,{y + 24})">' + rect(0, 0, 20, 20, "#000", "0") + "</g>")
         body.append(
             f'<g id="{direction}-slider-hover" transform="translate(10,{y + 48})">'
             + rect(0, 0, 36, 36, "#000", "0")
-            + f'<circle cx="18" cy="18" r="17" fill="none" stroke="{PRIMARY}" stroke-width="2" stroke-opacity="0.45"/>'
+            + f'<circle cx="18" cy="18" r="17" fill="none" stroke="{p["primary"]}" stroke-width="2" stroke-opacity="0.45"/>'
             + "</g>"
         )
         body.append(
             f'<g id="{direction}-slider-focus" transform="translate(10,{y + 88})">'
             + rect(0, 0, 36, 36, "#000", "0")
-            + f'<circle cx="18" cy="18" r="17" fill="none" stroke="{PRIMARY}" stroke-width="2" stroke-opacity="0.75"/>'
+            + f'<circle cx="18" cy="18" r="17" fill="none" stroke="{p["primary"]}" stroke-width="2" stroke-opacity="0.75"/>'
             + "</g>"
         )
     # Groove: 12px tall rounded track (4px caps), same structure as the
     # original theme so Slider.qml's fixedMargins add up to 12.
     r = 4
-    for prefix, y, color in (("groove", 340, SURFACE_HIGHEST), ("groove-highlight", 370, PRIMARY)):
+    for prefix, y, color in (("groove", 340, p["track"]), ("groove-highlight", 370, p["primary"])):
         body += [
             f'<g id="{prefix}-topleft" transform="translate(10,{y})"><path d="M0,{r} A{r},{r} 0 0 1 {r},0 L{r},{r} Z" fill="{color}"/></g>',
             f'<g id="{prefix}-topright" transform="translate({10 + 4 + 16},{y})"><path d="M0,0 A{r},{r} 0 0 1 {r},{r} L0,{r} Z" fill="{color}"/></g>',
@@ -369,28 +435,28 @@ def gen_slider():
             f'<g id="{prefix}-right">' + rect(10 + 4 + 16, y + 4, 4, 4, color) + "</g>",
             f'<g id="{prefix}-center">' + rect(10 + 4, y + 4, 16, 4, color) + "</g>",
         ]
-    write_svg(WIDGETS / "slider.svg", 90, 400, body)
+    write_svg(widgets / "slider.svg", 90, 400, body)
 
 
-def gen_panel():
+def gen_panel(p, widgets, solid_widgets):
     # Plasma 6 panel-background is used in three forms:
     #   * unprefixed elements     -> non-floating panel (adaptive/translucent)
-    #   * prefix "floating"       -> floating panel (18px pill + 18px padding)
+    #   * prefix "floating"       -> floating panel (9px pill + 9px padding)
     #   * solid/widgets/...       -> opaque panel when a window touches it
     # The unprefixed frame must be flat edge-to-edge; a rounded unprefixed
     # frame would leave gaps at the screen edges.
     w, h, edge = 64, 48, 4
     x, y = 10, 10
     body = [
-        f'<g id="topleft">' + rect(x, y, edge, edge, PANEL) + "</g>",
-        f'<g id="top">' + rect(x + edge, y, w - 2 * edge, edge, PANEL) + "</g>",
-        f'<g id="topright">' + rect(x + w - edge, y, edge, edge, PANEL) + "</g>",
-        f'<g id="left">' + rect(x, y + edge, edge, h - 2 * edge, PANEL) + "</g>",
-        f'<g id="center">' + rect(x + edge, y + edge, w - 2 * edge, h - 2 * edge, PANEL) + "</g>",
-        f'<g id="right">' + rect(x + w - edge, y + edge, edge, h - 2 * edge, PANEL) + "</g>",
-        f'<g id="bottomleft">' + rect(x, y + h - edge, edge, edge, PANEL) + "</g>",
-        f'<g id="bottom">' + rect(x + edge, y + h - edge, w - 2 * edge, edge, PANEL) + "</g>",
-        f'<g id="bottomright">' + rect(x + w - edge, y + h - edge, edge, edge, PANEL) + "</g>",
+        f'<g id="topleft">' + rect(x, y, edge, edge, p["window"]) + "</g>",
+        f'<g id="top">' + rect(x + edge, y, w - 2 * edge, edge, p["window"]) + "</g>",
+        f'<g id="topright">' + rect(x + w - edge, y, edge, edge, p["window"]) + "</g>",
+        f'<g id="left">' + rect(x, y + edge, edge, h - 2 * edge, p["window"]) + "</g>",
+        f'<g id="center">' + rect(x + edge, y + edge, w - 2 * edge, h - 2 * edge, p["window"]) + "</g>",
+        f'<g id="right">' + rect(x + w - edge, y + edge, edge, h - 2 * edge, p["window"]) + "</g>",
+        f'<g id="bottomleft">' + rect(x, y + h - edge, edge, edge, p["window"]) + "</g>",
+        f'<g id="bottom">' + rect(x + edge, y + h - edge, w - 2 * edge, edge, p["window"]) + "</g>",
+        f'<g id="bottomright">' + rect(x + w - edge, y + h - edge, edge, edge, p["window"]) + "</g>",
     ]
     # Padding hints (transparent); size = fixed margin.
     body += [
@@ -399,43 +465,336 @@ def gen_panel():
         '<g id="hint-top-margin">' + rect(x + 20, y, 4, 4, "#000", "0") + "</g>",
         '<g id="hint-bottom-margin">' + rect(x + 20, y + h - 4, 4, 4, "#000", "0") + "</g>",
     ]
-    # Floating variant: 18px rounded pill, 18px float padding.
-    fx, fy, fw, fh, fr = 10, 80, 64, 48, 18
-    body += frame("floating", fx, fy, fw, fh, fr, PANEL, HAIRLINE, 1)
+    # Floating variant: 9px rounded pill, 9px float padding (was 18px).
+    fx, fy, fw, fh, fr = 10, 80, 64, 48, 9
+    body += frame("floating", fx, fy, fw, fh, fr, p["window"], p["hairline"], 1)
     body += [
         '<g id="floating-hint-left-margin">' + rect(fx, fy + 24, fr, 4, "#000", "0") + "</g>",
         '<g id="floating-hint-right-margin">' + rect(fx + fw - fr, fy + 24, fr, 4, "#000", "0") + "</g>",
         '<g id="floating-hint-top-margin">' + rect(fx + 24, fy, 4, fr, "#000", "0") + "</g>",
         '<g id="floating-hint-bottom-margin">' + rect(fx + 24, fy + fh - fr, 4, fr, "#000", "0") + "</g>",
     ]
-    write_svg(WIDGETS / "panel-background.svg", 110, 190, body)
+    write_svg(widgets / "panel-background.svg", 110, 190, body)
     # Opaque (solid) variant: Plasma paints this when a window touches the panel.
-    write_svg(ROOT / "plasma" / "desktoptheme" / "material-dark-kde" / "solid" / "widgets" / "panel-background.svg", 110, 190, body)
+    write_svg(solid_widgets / "panel-background.svg", 110, 190, body)
 
 
-def patch_button():
-    path = WIDGETS / "button.svg"
+# ---------------------------------------------------------------------------
+# button.svg: 9-slice button states, radius 7 (half of 14). The element ids
+# and transforms are preserved; only the slice geometry and palette change.
+# ---------------------------------------------------------------------------
+BUTTON_FAMILIES = {
+    "normal": ("ColorScheme-ButtonBackground", None),
+    "hover": ("ColorScheme-Text", "0.08"),
+    "pressed": ("ColorScheme-Highlight", "0.22"),
+    "toolbutton-hover": ("ColorScheme-Text", "0.08"),
+    "toolbutton-pressed": ("ColorScheme-Text", "0.10"),
+}
+
+
+def _btn_art(family, gid, part):
+    fill_cls, opacity = BUTTON_FAMILIES.get(family, ("ColorScheme-Highlight", None))
+    ring = family in ("focus", "toolbutton-focus")
+    o = 9 if ring else 7          # outer radius
+    i = 7 if ring else 7          # inner radius (ring thickness 2)
+    box = o
+
+    def style(cls):
+        extra = f";fill-opacity:{opacity}" if opacity else ""
+        return f'class="{cls}" style="fill:currentColor{extra}"'
+
+    if part == "topleft":
+        d = (f"M0,{o} A{o},{o} 0 0 1 {o},0 L{o},{i} A{i},{i} 0 0 0 {i},{o} Z"
+             if ring else f"M0,{o} A{o},{o} 0 0 1 {o},0 L{o},{o} Z")
+        art = f'<rect width="{box}" height="{box}" fill="#000" fill-opacity="0"/>'
+        if ring:
+            art += f'<path d="{d}" {style(fill_cls)}/>'
+        else:
+            art += f'<path d="{d}" {style(fill_cls)}/>'
+        return art
+    if part == "topright":
+        d = (f"M0,0 A{o},{o} 0 0 1 {o},{o} L{i},{o} A{i},{i} 0 0 0 0,{i} Z"
+             if ring else f"M0,0 A{o},{o} 0 0 1 {o},{o} L0,{o} Z")
+        return f'<rect width="{box}" height="{box}" fill="#000" fill-opacity="0"/><path d="{d}" {style(fill_cls)}/>'
+    if part == "bottomleft":
+        d = (f"M0,0 A{o},{o} 0 0 0 {o},{o} L{o},{i} A{i},{i} 0 0 1 {i},0 Z"
+             if ring else f"M0,0 A{o},{o} 0 0 0 {o},{o} L{o},0 Z")
+        return f'<rect width="{box}" height="{box}" fill="#000" fill-opacity="0"/><path d="{d}" {style(fill_cls)}/>'
+    if part == "bottomright":
+        d = (f"M{o},0 A{o},{o} 0 0 1 0,{o} L0,{i} A{i},{i} 0 0 0 {i},0 Z"
+             if ring else f"M{o},0 A{o},{o} 0 0 1 0,{o} L0,0 Z")
+        return f'<rect width="{box}" height="{box}" fill="#000" fill-opacity="0"/><path d="{d}" {style(fill_cls)}/>'
+
+    mid = 4
+    if part == "top":
+        art = f'<rect width="{mid}" height="{box}" fill="#000" fill-opacity="0"/>'
+        if ring:
+            art += f'<rect width="{mid}" height="2" {style(fill_cls)}/>'
+        else:
+            art += f'<rect width="{mid}" height="{box}" {style(fill_cls)}/>'
+        return art
+    if part == "bottom":
+        art = f'<rect width="{mid}" height="{box}" fill="#000" fill-opacity="0"/>'
+        if ring:
+            art += f'<rect y="{box - 2}" width="{mid}" height="2" {style(fill_cls)}/>'
+        else:
+            art += f'<rect width="{mid}" height="{box}" {style(fill_cls)}/>'
+        return art
+    if part == "left":
+        art = f'<rect width="{box}" height="{mid}" fill="#000" fill-opacity="0"/>'
+        if ring:
+            art += f'<rect width="2" height="{mid}" {style(fill_cls)}/>'
+        else:
+            art += f'<rect width="{box}" height="{mid}" {style(fill_cls)}/>'
+        return art
+    if part == "right":
+        art = f'<rect width="{box}" height="{mid}" fill="#000" fill-opacity="0"/>'
+        if ring:
+            art += f'<rect x="{box - 2}" width="2" height="{mid}" {style(fill_cls)}/>'
+        else:
+            art += f'<rect width="{box}" height="{mid}" {style(fill_cls)}/>'
+        return art
+    # center
+    art = f'<rect width="{mid}" height="{mid}" fill="#000" fill-opacity="0"/>'
+    if not ring:
+        art += f'<rect width="{mid}" height="{mid}" {style(fill_cls)}/>'
+    return art
+
+
+def gen_button(path, p):
+    if not path.exists():
+        src = ROOT / "plasma" / "desktoptheme" / "material-dark-kde" / "widgets" / "button.svg"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(src.read_text())
     text = path.read_text()
-    text = text.replace("#E6E0E9", TEXT).replace("#D0BCFF", PRIMARY).replace("#4A4458", SURFACE_HIGH)
-    # Pressed / checked buttons get a stronger pink state layer.
-    start = text.find('<g id="pressed-topleft"')
-    end = text.find('<g id="focus-topleft"')
-    if start != -1 and end != -1:
-        chunk = text[start:end]
-        chunk = chunk.replace('class="ColorScheme-Text"', 'class="ColorScheme-Highlight"')
-        chunk = chunk.replace("fill-opacity:0.12", "fill-opacity:0.22")
-        text = text[:start] + chunk + text[end:]
+    # Palette fallback inside the SVG (KSvg replaces these via ColorScheme-*).
+    text = re.sub(
+        r'(\.ColorScheme-Text \{ color:)[^;]+(; \})',
+        rf'\g<1>{p["text"]}\g<2>', text)
+    text = re.sub(
+        r'(\.ColorScheme-Highlight \{ color:)[^;]+(; \})',
+        rf'\g<1>{p["primary"]}\g<2>', text)
+    text = re.sub(
+        r'(\.ColorScheme-ButtonBackground \{ color:)[^;]+(; \})',
+        rf'\g<1>{p["button"]}\g<2>', text)
+
+    def repl(m):
+        gid, transform, _inner = m.group(1), m.group(2) or "", m.group(3)
+        family, _, part = gid.rpartition("-")
+        if family not in list(BUTTON_FAMILIES) + ["focus", "toolbutton-focus"]:
+            return m.group(0)
+        if part not in ("topleft", "topright", "bottomleft", "bottomright",
+                        "top", "bottom", "left", "right", "center"):
+            return m.group(0)
+        return f'<g id="{gid}"{transform}>{_btn_art(family, gid, part)}</g>'
+
+    text = re.sub(r'<g id="([^"]+)"( transform="[^"]*")?>(.*?)</g>', repl, text)
     path.write_text(text)
     print("patched", path.relative_to(ROOT))
 
 
+# ---------------------------------------------------------------------------
+# Color scheme and Konsole scheme from the same palette.
+# ---------------------------------------------------------------------------
+def scheme_text(p):
+    t = lambda k: csv(p[k])  # noqa: E731
+    fg = f"""DecorationFocus={t('primary')}
+DecorationHover={t('primary_container')}
+ForegroundActive={t('primary')}
+ForegroundInactive={t('inactive')}
+ForegroundLink={t('link')}
+ForegroundNegative={t('error')}
+ForegroundNeutral={t('warning')}
+ForegroundNormal={t('text')}
+ForegroundPositive={t('positive')}
+ForegroundVisited={t('visited')}"""
+    header_inactive = f"""DecorationFocus={t('primary')}
+DecorationHover={t('primary_container')}
+ForegroundActive={t('primary')}
+ForegroundInactive={t('wm_inactive')}
+ForegroundLink={t('primary_container')}
+ForegroundNegative={t('error')}
+ForegroundNeutral={t('warning')}
+ForegroundNormal={t('inactive')}
+ForegroundPositive={t('positive')}
+ForegroundVisited={t('visited')}"""
+    selection = f"""DecorationFocus={t('primary_container')}
+DecorationHover={t('primary_container')}
+ForegroundActive={t('on_primary')}
+ForegroundInactive={t('sel_fg_inactive')}
+ForegroundLink={t('sel_link')}
+ForegroundNegative={t('sel_neg')}
+ForegroundNeutral={t('sel_neutral')}
+ForegroundNormal={t('on_primary')}
+ForegroundPositive={t('sel_pos')}
+ForegroundVisited={t('sel_visited')}"""
+    return f"""[ColorEffects:Disabled]
+Color={t('disabled')}
+ColorAmount=0
+ColorEffect=0
+ContrastAmount=0.65
+ContrastEffect=1
+IntensityAmount=0.1
+IntensityEffect=2
+
+[ColorEffects:Inactive]
+ChangeSelectionColor=true
+Color={t('inactive_effect')}
+ColorAmount=0.025
+ColorEffect=2
+ContrastAmount=0.1
+ContrastEffect=2
+Enable=false
+IntensityAmount=0
+IntensityEffect=0
+
+[Colors:Button]
+BackgroundAlternate={t('button_alt')}
+BackgroundNormal={t('button')}
+{fg}
+
+[Colors:Complementary]
+BackgroundAlternate={t('section')}
+BackgroundNormal={t('window')}
+{fg}
+
+[Colors:Header]
+BackgroundAlternate={t('section')}
+BackgroundNormal={t('window')}
+{fg}
+
+[Colors:Header][Inactive]
+BackgroundAlternate={t('window')}
+BackgroundNormal={t('header_inactive')}
+{header_inactive}
+
+[Colors:Selection]
+BackgroundAlternate={t('primary_container')}
+BackgroundNormal={t('primary')}
+{selection}
+
+[Colors:Tooltip]
+BackgroundAlternate={t('button_alt')}
+BackgroundNormal={t('tooltip')}
+DecorationFocus={t('primary')}
+DecorationHover={t('primary')}
+ForegroundActive={t('primary')}
+ForegroundInactive={t('inactive')}
+ForegroundLink={t('primary_container')}
+ForegroundNegative={t('error')}
+ForegroundNeutral={t('warning')}
+ForegroundNormal={t('text')}
+ForegroundPositive={t('positive')}
+ForegroundVisited={t('visited')}
+
+[Colors:View]
+BackgroundAlternate={t('view_alt')}
+BackgroundNormal={t('view')}
+{fg}
+
+[Colors:Window]
+BackgroundAlternate={t('section')}
+BackgroundNormal={t('window')}
+{fg}
+
+[General]
+ColorScheme={p['scheme']}
+Name={p['name']}
+shadeSortColumn=true
+
+[KDE]
+contrast=2
+
+[WM]
+activeBackground={t('titlebar')}
+activeBlend={t('text')}
+activeForeground={t('text')}
+inactiveBackground={t('window')}
+inactiveBlend={t('wm_inactive')}
+inactiveForeground={t('wm_inactive')}
+"""
+
+
+def konsole_text(p):
+    t = lambda k: csv(p[k])  # noqa: E731
+    colors = []
+    for i, (normal, faint, intense) in enumerate(p["ansi"]):
+        colors.append(f"[Color{i}]\nColor={csv(normal)}\n\n[Color{i}Faint]\nColor={csv(faint)}\n\n[Color{i}Intense]\nColor={csv(intense)}\n")
+    return f"""[Background]
+Color={t('konsole_bg')}
+
+[BackgroundFaint]
+Color={t('konsole_faint')}
+
+[BackgroundIntense]
+Color={t('konsole_intense')}
+
+""" + "\n".join(colors) + f"""
+[Foreground]
+Color={t('text')}
+
+[ForegroundFaint]
+Color={t('inactive')}
+
+[ForegroundIntense]
+Color=255,255,255
+
+[General]
+Anchor=0.5,0.5
+Blur=false
+ColorRandomization=false
+Description={p['name']}
+FillStyle=Tile
+Opacity=1
+Wallpaper=
+"""
+
+
+def gen_schemes(p):
+    scheme_path = ROOT / "color-schemes" / f"{p['scheme']}.colors"
+    scheme_path.write_text(scheme_text(p))
+    print("wrote", scheme_path.relative_to(ROOT))
+
+    konsole_path = ROOT / "konsole" / f"{p['scheme']}.colorscheme"
+    konsole_path.write_text(konsole_text(p))
+    print("wrote", konsole_path.relative_to(ROOT))
+
+    theme = ROOT / "plasma" / "desktoptheme" / p["id"]
+    (theme / "colors").write_text(scheme_text(p))
+    meta = {
+        "KPlugin": {
+            "Authors": [{"Name": p["name"]}],
+            "Description": p["desc"],
+            "Id": p["id"],
+            "License": "MIT",
+            "Name": p["name"],
+            "Version": VERSION,
+        }
+    }
+    (theme / "metadata.json").write_text(json.dumps(meta, indent=4) + "\n")
+    print("wrote", (theme / "metadata.json").relative_to(ROOT))
+
+
+def generate(p):
+    theme = ROOT / "plasma" / "desktoptheme" / p["id"]
+    widgets = theme / "widgets"
+    dialogs = theme / "dialogs"
+    solid = theme / "solid" / "widgets"
+    gen_backgrounds(p, widgets, dialogs)
+    gen_viewitem(p, widgets)
+    gen_bar(widgets / "bar_meter_horizontal.svg", p)
+    gen_bar(widgets / "bar_meter_vertical.svg", p, vertical=True)
+    gen_switch(p, widgets)
+    gen_lineedit(p, widgets)
+    gen_slider(p, widgets)
+    gen_panel(p, widgets, solid)
+    gen_button(widgets / "button.svg", p)
+    gen_schemes(p)
+
+
 if __name__ == "__main__":
-    gen_backgrounds()
-    gen_viewitem()
-    gen_bar(WIDGETS / "bar_meter_horizontal.svg")
-    gen_bar(WIDGETS / "bar_meter_vertical.svg", vertical=True)
-    gen_switch()
-    gen_lineedit()
-    gen_slider()
-    gen_panel()
-    patch_button()
+    wanted = sys.argv[1:] or list(PALETTES)
+    for name in wanted:
+        if name not in PALETTES:
+            raise SystemExit(f"Varian tidak dikenal: {name} (pilih: {', '.join(PALETTES)})")
+        generate(PALETTES[name])

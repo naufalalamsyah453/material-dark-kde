@@ -7,93 +7,93 @@
 .ColorScheme-ButtonBackground { color:#322A2E; }
 </style>
 </defs>
-<g id="normal-topleft" transform="translate(10,10)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,14 A14,14 0 0 1 14,0 L14,14 Z" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
-<g id="normal-topright" transform="translate(10,30)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,0 A14,14 0 0 1 14,14 L0,14 Z" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
-<g id="normal-bottomleft" transform="translate(10,50)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,0 A14,14 0 0 0 14,14 L14,0 Z" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
-<g id="normal-bottomright" transform="translate(10,70)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M14,0 A14,14 0 0 1 0,14 L0,0 Z" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
-<g id="normal-top" transform="translate(10,90)"><rect width="8" height="14" fill="#000" fill-opacity="0"/><rect width="8" height="14" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
-<g id="normal-bottom" transform="translate(10,110)"><rect width="8" height="14" fill="#000" fill-opacity="0"/><rect width="8" height="14" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
-<g id="normal-left" transform="translate(10,130)"><rect width="14" height="8" fill="#000" fill-opacity="0"/><rect width="14" height="8" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
-<g id="normal-right" transform="translate(10,144)"><rect width="14" height="8" fill="#000" fill-opacity="0"/><rect width="14" height="8" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
-<g id="normal-center" transform="translate(10,158)"><rect width="8" height="8" fill="#000" fill-opacity="0"/><rect width="8" height="8" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
+<g id="normal-topleft" transform="translate(10,10)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,7 A7,7 0 0 1 7,0 L7,7 Z" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
+<g id="normal-topright" transform="translate(10,30)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,0 A7,7 0 0 1 7,7 L0,7 Z" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
+<g id="normal-bottomleft" transform="translate(10,50)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,0 A7,7 0 0 0 7,7 L7,0 Z" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
+<g id="normal-bottomright" transform="translate(10,70)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M7,0 A7,7 0 0 1 0,7 L0,0 Z" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
+<g id="normal-top" transform="translate(10,90)"><rect width="4" height="7" fill="#000" fill-opacity="0"/><rect width="4" height="7" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
+<g id="normal-bottom" transform="translate(10,110)"><rect width="4" height="7" fill="#000" fill-opacity="0"/><rect width="4" height="7" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
+<g id="normal-left" transform="translate(10,130)"><rect width="7" height="4" fill="#000" fill-opacity="0"/><rect width="7" height="4" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
+<g id="normal-right" transform="translate(10,144)"><rect width="7" height="4" fill="#000" fill-opacity="0"/><rect width="7" height="4" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
+<g id="normal-center" transform="translate(10,158)"><rect width="4" height="4" fill="#000" fill-opacity="0"/><rect width="4" height="4" class="ColorScheme-ButtonBackground" style="fill:currentColor"/></g>
 <rect id="normal-hint-top-margin" x="10" y="172" width="2" height="6" fill="#f0f" fill-opacity="0"/>
 <rect id="normal-hint-bottom-margin" x="10" y="184" width="2" height="6" fill="#f0f" fill-opacity="0"/>
 <rect id="normal-hint-left-margin" x="10" y="196" width="16" height="2" fill="#f0f" fill-opacity="0"/>
 <rect id="normal-hint-right-margin" x="10" y="204" width="16" height="2" fill="#f0f" fill-opacity="0"/>
-<g id="hover-topleft" transform="translate(10,212)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,14 A14,14 0 0 1 14,0 L14,14 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="hover-topright" transform="translate(10,232)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,0 A14,14 0 0 1 14,14 L0,14 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="hover-bottomleft" transform="translate(10,252)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,0 A14,14 0 0 0 14,14 L14,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="hover-bottomright" transform="translate(10,272)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M14,0 A14,14 0 0 1 0,14 L0,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="hover-top" transform="translate(10,292)"><rect width="8" height="14" fill="#000" fill-opacity="0"/><rect width="8" height="14" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="hover-bottom" transform="translate(10,312)"><rect width="8" height="14" fill="#000" fill-opacity="0"/><rect width="8" height="14" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="hover-left" transform="translate(10,332)"><rect width="14" height="8" fill="#000" fill-opacity="0"/><rect width="14" height="8" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="hover-right" transform="translate(10,346)"><rect width="14" height="8" fill="#000" fill-opacity="0"/><rect width="14" height="8" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="hover-center" transform="translate(10,360)"><rect width="8" height="8" fill="#000" fill-opacity="0"/><rect width="8" height="8" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="hover-topleft" transform="translate(10,212)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,7 A7,7 0 0 1 7,0 L7,7 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="hover-topright" transform="translate(10,232)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,0 A7,7 0 0 1 7,7 L0,7 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="hover-bottomleft" transform="translate(10,252)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,0 A7,7 0 0 0 7,7 L7,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="hover-bottomright" transform="translate(10,272)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M7,0 A7,7 0 0 1 0,7 L0,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="hover-top" transform="translate(10,292)"><rect width="4" height="7" fill="#000" fill-opacity="0"/><rect width="4" height="7" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="hover-bottom" transform="translate(10,312)"><rect width="4" height="7" fill="#000" fill-opacity="0"/><rect width="4" height="7" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="hover-left" transform="translate(10,332)"><rect width="7" height="4" fill="#000" fill-opacity="0"/><rect width="7" height="4" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="hover-right" transform="translate(10,346)"><rect width="7" height="4" fill="#000" fill-opacity="0"/><rect width="7" height="4" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="hover-center" transform="translate(10,360)"><rect width="4" height="4" fill="#000" fill-opacity="0"/><rect width="4" height="4" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
 <rect id="hover-hint-top-margin" x="10" y="374" width="2" height="0.001" fill="#f0f" fill-opacity="0"/>
 <rect id="hover-hint-bottom-margin" x="10" y="380.001" width="2" height="0.001" fill="#f0f" fill-opacity="0"/>
 <rect id="hover-hint-left-margin" x="10" y="386.00199999999995" width="0.001" height="2" fill="#f0f" fill-opacity="0"/>
 <rect id="hover-hint-right-margin" x="10" y="394.00199999999995" width="0.001" height="2" fill="#f0f" fill-opacity="0"/>
-<g id="pressed-topleft" transform="translate(10,402.00199999999995)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,14 A14,14 0 0 1 14,0 L14,14 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="pressed-topright" transform="translate(10,422.00199999999995)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,0 A14,14 0 0 1 14,14 L0,14 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="pressed-bottomleft" transform="translate(10,442.00199999999995)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,0 A14,14 0 0 0 14,14 L14,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="pressed-bottomright" transform="translate(10,462.00199999999995)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M14,0 A14,14 0 0 1 0,14 L0,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="pressed-top" transform="translate(10,482.00199999999995)"><rect width="8" height="14" fill="#000" fill-opacity="0"/><rect width="8" height="14" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="pressed-bottom" transform="translate(10,502.00199999999995)"><rect width="8" height="14" fill="#000" fill-opacity="0"/><rect width="8" height="14" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="pressed-left" transform="translate(10,522.002)"><rect width="14" height="8" fill="#000" fill-opacity="0"/><rect width="14" height="8" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="pressed-right" transform="translate(10,536.002)"><rect width="14" height="8" fill="#000" fill-opacity="0"/><rect width="14" height="8" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="pressed-center" transform="translate(10,550.002)"><rect width="8" height="8" fill="#000" fill-opacity="0"/><rect width="8" height="8" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
+<g id="pressed-topleft" transform="translate(10,402.00199999999995)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,7 A7,7 0 0 1 7,0 L7,7 Z" class="ColorScheme-Highlight" style="fill:currentColor;fill-opacity:0.22"/></g>
+<g id="pressed-topright" transform="translate(10,422.00199999999995)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,0 A7,7 0 0 1 7,7 L0,7 Z" class="ColorScheme-Highlight" style="fill:currentColor;fill-opacity:0.22"/></g>
+<g id="pressed-bottomleft" transform="translate(10,442.00199999999995)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,0 A7,7 0 0 0 7,7 L7,0 Z" class="ColorScheme-Highlight" style="fill:currentColor;fill-opacity:0.22"/></g>
+<g id="pressed-bottomright" transform="translate(10,462.00199999999995)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M7,0 A7,7 0 0 1 0,7 L0,0 Z" class="ColorScheme-Highlight" style="fill:currentColor;fill-opacity:0.22"/></g>
+<g id="pressed-top" transform="translate(10,482.00199999999995)"><rect width="4" height="7" fill="#000" fill-opacity="0"/><rect width="4" height="7" class="ColorScheme-Highlight" style="fill:currentColor;fill-opacity:0.22"/></g>
+<g id="pressed-bottom" transform="translate(10,502.00199999999995)"><rect width="4" height="7" fill="#000" fill-opacity="0"/><rect width="4" height="7" class="ColorScheme-Highlight" style="fill:currentColor;fill-opacity:0.22"/></g>
+<g id="pressed-left" transform="translate(10,522.002)"><rect width="7" height="4" fill="#000" fill-opacity="0"/><rect width="7" height="4" class="ColorScheme-Highlight" style="fill:currentColor;fill-opacity:0.22"/></g>
+<g id="pressed-right" transform="translate(10,536.002)"><rect width="7" height="4" fill="#000" fill-opacity="0"/><rect width="7" height="4" class="ColorScheme-Highlight" style="fill:currentColor;fill-opacity:0.22"/></g>
+<g id="pressed-center" transform="translate(10,550.002)"><rect width="4" height="4" fill="#000" fill-opacity="0"/><rect width="4" height="4" class="ColorScheme-Highlight" style="fill:currentColor;fill-opacity:0.22"/></g>
 <rect id="pressed-hint-top-margin" x="10" y="564.002" width="2" height="6" fill="#f0f" fill-opacity="0"/>
 <rect id="pressed-hint-bottom-margin" x="10" y="576.002" width="2" height="6" fill="#f0f" fill-opacity="0"/>
 <rect id="pressed-hint-left-margin" x="10" y="588.002" width="16" height="2" fill="#f0f" fill-opacity="0"/>
 <rect id="pressed-hint-right-margin" x="10" y="596.002" width="16" height="2" fill="#f0f" fill-opacity="0"/>
-<g id="focus-topleft" transform="translate(10,604.002)"><rect width="16" height="16" fill="#000" fill-opacity="0"/><path d="M0,16 A16,16 0 0 1 16,0 L16,2 A14,14 0 0 0 2,16 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="focus-topright" transform="translate(10,626.002)"><rect width="16" height="16" fill="#000" fill-opacity="0"/><path d="M0,0 A16,16 0 0 1 16,16 L14,16 A14,14 0 0 0 0,2 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="focus-bottomleft" transform="translate(10,648.002)"><rect width="16" height="16" fill="#000" fill-opacity="0"/><path d="M0,0 A16,16 0 0 0 16,16 L16,14 A14,14 0 0 1 2,0 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="focus-bottomright" transform="translate(10,670.002)"><rect width="16" height="16" fill="#000" fill-opacity="0"/><path d="M16,0 A16,16 0 0 1 0,16 L0,14 A14,14 0 0 0 14,0 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="focus-top" transform="translate(10,692.002)"><rect width="8" height="16" fill="#000" fill-opacity="0"/><rect width="8" height="2" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="focus-bottom" transform="translate(10,714.002)"><rect width="8" height="16" fill="#000" fill-opacity="0"/><rect y="14" width="8" height="2" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="focus-left" transform="translate(10,736.002)"><rect width="16" height="8" fill="#000" fill-opacity="0"/><rect width="2" height="8" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="focus-right" transform="translate(10,750.002)"><rect width="16" height="8" fill="#000" fill-opacity="0"/><rect x="14" width="2" height="8" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="focus-center" transform="translate(10,764.002)"><rect width="8" height="8" fill="#000" fill-opacity="0"/></g>
+<g id="focus-topleft" transform="translate(10,604.002)"><rect width="9" height="9" fill="#000" fill-opacity="0"/><path d="M0,9 A9,9 0 0 1 9,0 L9,7 A7,7 0 0 0 7,9 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="focus-topright" transform="translate(10,626.002)"><rect width="9" height="9" fill="#000" fill-opacity="0"/><path d="M0,0 A9,9 0 0 1 9,9 L7,9 A7,7 0 0 0 0,7 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="focus-bottomleft" transform="translate(10,648.002)"><rect width="9" height="9" fill="#000" fill-opacity="0"/><path d="M0,0 A9,9 0 0 0 9,9 L9,7 A7,7 0 0 1 7,0 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="focus-bottomright" transform="translate(10,670.002)"><rect width="9" height="9" fill="#000" fill-opacity="0"/><path d="M9,0 A9,9 0 0 1 0,9 L0,7 A7,7 0 0 0 7,0 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="focus-top" transform="translate(10,692.002)"><rect width="4" height="9" fill="#000" fill-opacity="0"/><rect width="4" height="2" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="focus-bottom" transform="translate(10,714.002)"><rect width="4" height="9" fill="#000" fill-opacity="0"/><rect y="7" width="4" height="2" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="focus-left" transform="translate(10,736.002)"><rect width="9" height="4" fill="#000" fill-opacity="0"/><rect width="2" height="4" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="focus-right" transform="translate(10,750.002)"><rect width="9" height="4" fill="#000" fill-opacity="0"/><rect x="7" width="2" height="4" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="focus-center" transform="translate(10,764.002)"><rect width="4" height="4" fill="#000" fill-opacity="0"/></g>
 <rect id="focus-hint-top-margin" x="10" y="778.002" width="2" height="2" fill="#f0f" fill-opacity="0"/>
 <rect id="focus-hint-bottom-margin" x="10" y="786.002" width="2" height="2" fill="#f0f" fill-opacity="0"/>
 <rect id="focus-hint-left-margin" x="10" y="794.002" width="2" height="2" fill="#f0f" fill-opacity="0"/>
 <rect id="focus-hint-right-margin" x="10" y="802.002" width="2" height="2" fill="#f0f" fill-opacity="0"/>
-<g id="toolbutton-hover-topleft" transform="translate(10,810.002)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,14 A14,14 0 0 1 14,0 L14,14 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="toolbutton-hover-topright" transform="translate(10,830.002)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,0 A14,14 0 0 1 14,14 L0,14 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="toolbutton-hover-bottomleft" transform="translate(10,850.002)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,0 A14,14 0 0 0 14,14 L14,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="toolbutton-hover-bottomright" transform="translate(10,870.002)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M14,0 A14,14 0 0 1 0,14 L0,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="toolbutton-hover-top" transform="translate(10,890.002)"><rect width="8" height="14" fill="#000" fill-opacity="0"/><rect width="8" height="14" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="toolbutton-hover-bottom" transform="translate(10,910.002)"><rect width="8" height="14" fill="#000" fill-opacity="0"/><rect width="8" height="14" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="toolbutton-hover-left" transform="translate(10,930.002)"><rect width="14" height="8" fill="#000" fill-opacity="0"/><rect width="14" height="8" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="toolbutton-hover-right" transform="translate(10,944.002)"><rect width="14" height="8" fill="#000" fill-opacity="0"/><rect width="14" height="8" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
-<g id="toolbutton-hover-center" transform="translate(10,958.002)"><rect width="8" height="8" fill="#000" fill-opacity="0"/><rect width="8" height="8" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="toolbutton-hover-topleft" transform="translate(10,810.002)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,7 A7,7 0 0 1 7,0 L7,7 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="toolbutton-hover-topright" transform="translate(10,830.002)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,0 A7,7 0 0 1 7,7 L0,7 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="toolbutton-hover-bottomleft" transform="translate(10,850.002)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,0 A7,7 0 0 0 7,7 L7,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="toolbutton-hover-bottomright" transform="translate(10,870.002)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M7,0 A7,7 0 0 1 0,7 L0,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="toolbutton-hover-top" transform="translate(10,890.002)"><rect width="4" height="7" fill="#000" fill-opacity="0"/><rect width="4" height="7" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="toolbutton-hover-bottom" transform="translate(10,910.002)"><rect width="4" height="7" fill="#000" fill-opacity="0"/><rect width="4" height="7" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="toolbutton-hover-left" transform="translate(10,930.002)"><rect width="7" height="4" fill="#000" fill-opacity="0"/><rect width="7" height="4" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="toolbutton-hover-right" transform="translate(10,944.002)"><rect width="7" height="4" fill="#000" fill-opacity="0"/><rect width="7" height="4" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
+<g id="toolbutton-hover-center" transform="translate(10,958.002)"><rect width="4" height="4" fill="#000" fill-opacity="0"/><rect width="4" height="4" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.08"/></g>
 <rect id="toolbutton-hover-hint-top-margin" x="10" y="972.002" width="2" height="6" fill="#f0f" fill-opacity="0"/>
 <rect id="toolbutton-hover-hint-bottom-margin" x="10" y="984.002" width="2" height="6" fill="#f0f" fill-opacity="0"/>
 <rect id="toolbutton-hover-hint-left-margin" x="10" y="996.002" width="10" height="2" fill="#f0f" fill-opacity="0"/>
 <rect id="toolbutton-hover-hint-right-margin" x="10" y="1004.002" width="10" height="2" fill="#f0f" fill-opacity="0"/>
-<g id="toolbutton-pressed-topleft" transform="translate(10,1012.002)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,14 A14,14 0 0 1 14,0 L14,14 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="toolbutton-pressed-topright" transform="translate(10,1032.002)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,0 A14,14 0 0 1 14,14 L0,14 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="toolbutton-pressed-bottomleft" transform="translate(10,1052.002)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M0,0 A14,14 0 0 0 14,14 L14,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="toolbutton-pressed-bottomright" transform="translate(10,1072.002)"><rect width="14" height="14" fill="#000" fill-opacity="0"/><path d="M14,0 A14,14 0 0 1 0,14 L0,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="toolbutton-pressed-top" transform="translate(10,1092.002)"><rect width="8" height="14" fill="#000" fill-opacity="0"/><rect width="8" height="14" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="toolbutton-pressed-bottom" transform="translate(10,1112.002)"><rect width="8" height="14" fill="#000" fill-opacity="0"/><rect width="8" height="14" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="toolbutton-pressed-left" transform="translate(10,1132.002)"><rect width="14" height="8" fill="#000" fill-opacity="0"/><rect width="14" height="8" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="toolbutton-pressed-right" transform="translate(10,1146.002)"><rect width="14" height="8" fill="#000" fill-opacity="0"/><rect width="14" height="8" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
-<g id="toolbutton-pressed-center" transform="translate(10,1160.002)"><rect width="8" height="8" fill="#000" fill-opacity="0"/><rect width="8" height="8" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
+<g id="toolbutton-pressed-topleft" transform="translate(10,1012.002)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,7 A7,7 0 0 1 7,0 L7,7 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
+<g id="toolbutton-pressed-topright" transform="translate(10,1032.002)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,0 A7,7 0 0 1 7,7 L0,7 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
+<g id="toolbutton-pressed-bottomleft" transform="translate(10,1052.002)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M0,0 A7,7 0 0 0 7,7 L7,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
+<g id="toolbutton-pressed-bottomright" transform="translate(10,1072.002)"><rect width="7" height="7" fill="#000" fill-opacity="0"/><path d="M7,0 A7,7 0 0 1 0,7 L0,0 Z" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
+<g id="toolbutton-pressed-top" transform="translate(10,1092.002)"><rect width="4" height="7" fill="#000" fill-opacity="0"/><rect width="4" height="7" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
+<g id="toolbutton-pressed-bottom" transform="translate(10,1112.002)"><rect width="4" height="7" fill="#000" fill-opacity="0"/><rect width="4" height="7" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
+<g id="toolbutton-pressed-left" transform="translate(10,1132.002)"><rect width="7" height="4" fill="#000" fill-opacity="0"/><rect width="7" height="4" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
+<g id="toolbutton-pressed-right" transform="translate(10,1146.002)"><rect width="7" height="4" fill="#000" fill-opacity="0"/><rect width="7" height="4" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
+<g id="toolbutton-pressed-center" transform="translate(10,1160.002)"><rect width="4" height="4" fill="#000" fill-opacity="0"/><rect width="4" height="4" class="ColorScheme-Text" style="fill:currentColor;fill-opacity:0.10"/></g>
 <rect id="toolbutton-pressed-hint-top-margin" x="10" y="1174.002" width="2" height="6" fill="#f0f" fill-opacity="0"/>
 <rect id="toolbutton-pressed-hint-bottom-margin" x="10" y="1186.002" width="2" height="6" fill="#f0f" fill-opacity="0"/>
 <rect id="toolbutton-pressed-hint-left-margin" x="10" y="1198.002" width="10" height="2" fill="#f0f" fill-opacity="0"/>
 <rect id="toolbutton-pressed-hint-right-margin" x="10" y="1206.002" width="10" height="2" fill="#f0f" fill-opacity="0"/>
-<g id="toolbutton-focus-topleft" transform="translate(10,1214.002)"><rect width="16" height="16" fill="#000" fill-opacity="0"/><path d="M0,16 A16,16 0 0 1 16,0 L16,2 A14,14 0 0 0 2,16 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="toolbutton-focus-topright" transform="translate(10,1236.002)"><rect width="16" height="16" fill="#000" fill-opacity="0"/><path d="M0,0 A16,16 0 0 1 16,16 L14,16 A14,14 0 0 0 0,2 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="toolbutton-focus-bottomleft" transform="translate(10,1258.002)"><rect width="16" height="16" fill="#000" fill-opacity="0"/><path d="M0,0 A16,16 0 0 0 16,16 L16,14 A14,14 0 0 1 2,0 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="toolbutton-focus-bottomright" transform="translate(10,1280.002)"><rect width="16" height="16" fill="#000" fill-opacity="0"/><path d="M16,0 A16,16 0 0 1 0,16 L0,14 A14,14 0 0 0 14,0 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="toolbutton-focus-top" transform="translate(10,1302.002)"><rect width="8" height="16" fill="#000" fill-opacity="0"/><rect width="8" height="2" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="toolbutton-focus-bottom" transform="translate(10,1324.002)"><rect width="8" height="16" fill="#000" fill-opacity="0"/><rect y="14" width="8" height="2" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="toolbutton-focus-left" transform="translate(10,1346.002)"><rect width="16" height="8" fill="#000" fill-opacity="0"/><rect width="2" height="8" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="toolbutton-focus-right" transform="translate(10,1360.002)"><rect width="16" height="8" fill="#000" fill-opacity="0"/><rect x="14" width="2" height="8" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
-<g id="toolbutton-focus-center" transform="translate(10,1374.002)"><rect width="8" height="8" fill="#000" fill-opacity="0"/></g>
+<g id="toolbutton-focus-topleft" transform="translate(10,1214.002)"><rect width="9" height="9" fill="#000" fill-opacity="0"/><path d="M0,9 A9,9 0 0 1 9,0 L9,7 A7,7 0 0 0 7,9 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="toolbutton-focus-topright" transform="translate(10,1236.002)"><rect width="9" height="9" fill="#000" fill-opacity="0"/><path d="M0,0 A9,9 0 0 1 9,9 L7,9 A7,7 0 0 0 0,7 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="toolbutton-focus-bottomleft" transform="translate(10,1258.002)"><rect width="9" height="9" fill="#000" fill-opacity="0"/><path d="M0,0 A9,9 0 0 0 9,9 L9,7 A7,7 0 0 1 7,0 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="toolbutton-focus-bottomright" transform="translate(10,1280.002)"><rect width="9" height="9" fill="#000" fill-opacity="0"/><path d="M9,0 A9,9 0 0 1 0,9 L0,7 A7,7 0 0 0 7,0 Z" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="toolbutton-focus-top" transform="translate(10,1302.002)"><rect width="4" height="9" fill="#000" fill-opacity="0"/><rect width="4" height="2" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="toolbutton-focus-bottom" transform="translate(10,1324.002)"><rect width="4" height="9" fill="#000" fill-opacity="0"/><rect y="7" width="4" height="2" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="toolbutton-focus-left" transform="translate(10,1346.002)"><rect width="9" height="4" fill="#000" fill-opacity="0"/><rect width="2" height="4" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="toolbutton-focus-right" transform="translate(10,1360.002)"><rect width="9" height="4" fill="#000" fill-opacity="0"/><rect x="7" width="2" height="4" class="ColorScheme-Highlight" style="fill:currentColor"/></g>
+<g id="toolbutton-focus-center" transform="translate(10,1374.002)"><rect width="4" height="4" fill="#000" fill-opacity="0"/></g>
 <rect id="toolbutton-focus-hint-top-margin" x="10" y="1388.002" width="2" height="2" fill="#f0f" fill-opacity="0"/>
 <rect id="toolbutton-focus-hint-bottom-margin" x="10" y="1396.002" width="2" height="2" fill="#f0f" fill-opacity="0"/>
 <rect id="toolbutton-focus-hint-left-margin" x="10" y="1404.002" width="2" height="2" fill="#f0f" fill-opacity="0"/>

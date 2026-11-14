@@ -86,6 +86,22 @@ QColor trackTone(const QPalette &pal)
     return mix(pal.color(QPalette::Window), pal.color(QPalette::WindowText), 0.15);
 }
 
+// Seleksi saat jendela tidak aktif. Delegate seperti sidebar Dolphin memakai
+// palette.text() (terang) untuk teks terpilih walau jendela tidak aktif, jadi
+// pil pink tidak boleh dipakai apa adanya. Turunkan value dan naikkan saturasi
+// aksen supaya hue tetap (pink / biru) tetapi kontras teks terang tetap aman.
+QColor inactiveSelectionTone(const QColor &primary)
+{
+    float h, s, v, a;
+    primary.getHsvF(&h, &s, &v, &a);
+    if (h < 0) { // aksen abu-abu: cukup digelapkan
+        return mix(primary, Qt::black, 0.55);
+    }
+    QColor c;
+    c.setHsvF(h, qMin(1.0f, s + 0.20f), 0.43f);
+    return c;
+}
+
 // menu yang latarnya tembus (sudut bulat); combobox popup dan lainnya tetap persegi
 bool isRoundMenu(const QWidget *w)
 {
@@ -484,10 +500,17 @@ void MaterialStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
         }
         p->save();
         p->setRenderHint(QPainter::Antialiasing);
+        const bool activeWindow = opt->state & State_Active;
         if (isEnabled(opt) && (opt->state & State_Selected)) {
-            fillRound(p, r, opt->palette.color(QPalette::Highlight), R_ITEM);
+            const QColor accent = opt->palette.color(QPalette::Active, QPalette::Highlight);
+            const QColor pill = activeWindow ? accent : inactiveSelectionTone(accent);
+            fillRound(p, r, pill, R_ITEM);
             if (opt->state & State_MouseOver) {
-                fillRound(p, r, withAlpha(opt->palette.color(QPalette::HighlightedText), 0.08), R_ITEM);
+                // Teks seleksi nonaktif tetap terang (Dolphin memakai palette.text()),
+                // jadi state layer juga memakai warna teks, bukan highlightedText.
+                const QColor layer = activeWindow ? opt->palette.color(QPalette::Active, QPalette::HighlightedText)
+                                                  : opt->palette.color(QPalette::Active, QPalette::Text);
+                fillRound(p, r, withAlpha(layer, 0.08), R_ITEM);
             }
         } else if (isEnabled(opt) && (opt->state & State_MouseOver)) {
             fillRound(p, r, withAlpha(opt->palette.color(QPalette::Text), 0.08), R_ITEM);

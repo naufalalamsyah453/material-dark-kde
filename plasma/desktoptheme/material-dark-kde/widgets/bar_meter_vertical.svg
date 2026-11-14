@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="90" height="120">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="90" height="120" viewBox="0 0 90 120">
 <g id="bar-inactive-left" transform="translate(10,10)"><path d="M6,0 A6,6 0 0 0 6,12 L6,0 Z" fill="#3A3538"/></g>
 <g id="bar-inactive-center" transform="translate(16,10)"><rect x="0" y="0" width="28" height="12" fill="#3A3538"/></g>
 <g id="bar-inactive-right" transform="translate(44,10)"><path d="M0,0 A6,6 0 0 1 0,12 L0,0 Z" fill="#3A3538"/></g>

@@ -65,8 +65,9 @@ style Qt, QML, dekorasi jendela, serta Plasma Style.
   header, tooltip, menu, dan seleksi list. Tombol berbentuk pil, hover/tekan memakai *state
   layer* pink, slider memakai track pink dengan knob gelap bercincin.
 - **Window Decoration "Material Dark"** — plugin KDecoration3: titlebar surface tonal, sudut
-  jendela 6px, tombol bulat, close memakai warna error M3. Tombol maximize tidak lagi memakai
-  lingkaran tetap saat jendela maksimal supaya tidak tampak terpotong oleh tombol sebelahnya.
+  jendela 6px, tombol bulat dengan jarak 12px, close memakai warna error M3. Tombol maximize
+  tidak lagi memakai lingkaran tetap saat jendela maksimal supaya tidak tampak terpotong oleh
+  tombol sebelahnya.
 - **Plasma Style "Material Dark"** (id `material-dark-kde`) — popup, panel, tooltip, item list,
   tombol, line edit, **slider**, **switch**, **progress bar / OSD volume** senada. Panel
   memakai permukaan `#1A1619`; versi mengambang memakai sudut 9px.
@@ -91,7 +92,7 @@ style Qt, QML, dekorasi jendela, serta Plasma Style.
 | Context menu | Permukaan tonal, sudut 12px, item hover = *state layer* |
 | Titlebar | Surface tonal, sudut jendela 6px, tombol bulat, close = error |
 | Tooltip | Surface `#322A2E`, sudut 5px (Plasma) |
-| Bayangan | Shell (menu, OSD, tooltip, panel mengambang) memakai shadow lembut; kontrol dalam window tidak |
+| Bayangan | Shell (menu, OSD, tooltip, panel mengambang) memakai shadow native Plasma di luar window; kontrol dalam window tidak |
 
 ## Isi Repo
 
@@ -162,12 +163,26 @@ Pindahkan dulu ke Breeze di System Settings, lalu `./uninstall.sh`.
 
 ## Riwayat Perubahan
 
+**1.3.2**
+- **Bayangan shell kembali ke mekanisme native Plasma**: app menu, popup applet, OSD, tooltip,
+  dan panel mengambang kini memakai elemen `shadow-*` + `mask-*` + `shadow-hint-*` yang sama
+  dengan tema default. Plasma menggambar bayangan **di luar** window, jadi tepi popup tidak lagi
+  berupa pita gelap dengan batas keras seperti pada 1.3.1; isi popup juga tidak bergeser karena
+  tidak ada padding bayangan yang ditanam.
+- **Sudut tidak lagi bergerigi pada fractional scaling**: semua SVG hasil generator sekarang
+  menyertakan `viewBox`, sehingga Plasma merasterisasi pada rasio perangkat (mis. 1.5×) alih-alih
+  merentangkan gambar 1×. Busur sudut dan bayangan jadi halus.
+- **Variasi solid panel** tidak lagi memuat pil mengambang/bayangan yang terpotong; panel solid
+  tetap rata ke tepi layar.
+- Tombol judul jendela memakai jarak 12px; lingkaran hover tidak lagi tampak terpotong oleh
+  tombol sebelahnya (perlu logout/login agar plugin dekorasi KWin yang baru dimuat).
+
 **1.3.1**
 - **Bayangan pada permukaan shell**: app menu / popup Plasma, OSD, tooltip, dan panel mengambang
   kini punya *drop shadow* lembut 8–10px yang mengikuti sudut membulat. Bayangan ditanam di
   padding frame 9-slice, jadi ukuran dan tata letak isi popup tidak berubah. Jendela tetap
   memakai shadow dekorasi KWin (24px). Kontrol **di dalam window** (tombol, input, kartu, menu
-  konteks) tidak diberi shadow.
+  konteks) tidak diberi shadow. Mekanisme ini digantikan oleh pendekatan native di 1.3.2.
 
 **1.3.0**
 - **Varian biru**: color scheme `MaterialDarkBlue`, Konsole `MaterialDarkBlue`, dan Plasma Style
